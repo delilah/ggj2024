@@ -3,7 +3,22 @@ guid: 840e246623167264b934bb55a396e85f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CakeDough
+    second: {fileID: 2100000, guid: 8e70023b1bcf46e4d8b8e7e472ddbd9f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CakeIcing
+    second: {fileID: 2100000, guid: 4c7ac60f0faf49d41ae056d3aae80056, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CakeMiddle
+    second: {fileID: 2100000, guid: 4c7ac60f0faf49d41ae056d3aae80056, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -67,7 +82,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60

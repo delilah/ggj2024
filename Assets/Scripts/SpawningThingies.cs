@@ -50,7 +50,8 @@ public class SpawningThingies : MonoBehaviour
         var side = Random.value > 0.5f ? 1f : -1f;
         var offset = Random.Range(_xVariance.x, _xVariance.y) * side * leaningMultiplier;
 
-        GameObject spawnedLayer = Instantiate(prefab.gameObject, _spawningPoint.position + Vector3.right * offset, Quaternion.identity);
+        var y = Random.Range(0f, 360f);
+        GameObject spawnedLayer = Instantiate(prefab.gameObject, _spawningPoint.position + Vector3.right * offset, Quaternion.Euler(0f, y, 0f));
         
         var newPos = _spawningPoint.position;
         newPos += Vector3.up * _yOffsetPerLayer;

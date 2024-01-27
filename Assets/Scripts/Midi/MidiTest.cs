@@ -7,7 +7,6 @@ public class MidiTest : MonoBehaviour
     public List<TimedNote> notes;
     private Queue<TimedNote> _notesQueue;
     private List<GameObject> _spawnedNotes = new List<GameObject>();
-    private List<GameObject> _toRemove = new List<GameObject>();
 
     public GameObject NoteA;
     public GameObject NoteB;
@@ -42,30 +41,23 @@ public class MidiTest : MonoBehaviour
             _spawnedNotes.Add(noteSpawned);
         }
 
-        for (int i = _spawnedNotes.Count - 1; i >= 0; i--)
-        {
-            GameObject spawnedNote = _spawnedNotes[i];
-            if (spawnedNote == null)
-            {
-                _spawnedNotes.RemoveAt(i);
-                continue;
-            }
 
+        for (int i = 0; i < _spawnedNotes.Count; i++)
+        {
+            var spawnedNote = _spawnedNotes[i];
             Vector3 movement = new Vector3(-speedMultiplier * Time.deltaTime, 0, 0);
             spawnedNote.transform.Translate(movement);
+        }
 
+        for (int i = _spawnedNotes.Count - 1; i >= 0; i--)
+        {
+            var spawnedNote = _spawnedNotes[i];
             if (spawnedNote.transform.position.x < _clearPrefabsPoint.transform.position.x)
             {
-                _toRemove.Add(spawnedNote);
+                Destroy(spawnedNote);
                 _spawnedNotes.RemoveAt(i);
             }
         }
-
-        foreach(var obj in _toRemove) 
-        {
-            Destroy(obj);
-        }
-        _toRemove.Clear();  
     }
 
     GameObject SpawnNotePrefab(TimedNote currentNote)

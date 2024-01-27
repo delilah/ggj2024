@@ -36,11 +36,13 @@ public class SpawningThingies : MonoBehaviour
     public void SpawnRandomGoodLayer()
     {
         SpawnLayer(RandomFromArray(_yummyLayerPrefabs), 0f);
+        CakeRating.GoodLayers++;
     }
 
     public void SpawnRandomBadLayer()
     {
         SpawnLayer(RandomFromArray(_yuckyLayerPrefabs), 1f);
+        CakeRating.BadLayers++;
     }
 
     public void SpawnLayer(CakeLayer prefab, float leaningMultiplier)

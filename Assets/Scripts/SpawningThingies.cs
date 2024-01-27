@@ -7,8 +7,8 @@ public class SpawningThingies : MonoBehaviour
     [SerializeField] private float _yOffsetPerLayer = 0.5f;
     [SerializeField] private Vector2 _xVariance = new Vector2(0.1f, 0.2f);
 
-    [SerializeField] private GameObject[] _yummyLayerPrefabs;
-    [SerializeField] private GameObject[] _yuckyLayerPrefabs;
+    [SerializeField] private CakeLayer[] _yummyLayerPrefabs;
+    [SerializeField] private CakeLayer[] _yuckyLayerPrefabs;
     [SerializeField] private Transform _spawningPoint;
 
     void Start()
@@ -36,26 +36,28 @@ public class SpawningThingies : MonoBehaviour
     public void SpawnRandomGoodLayer()
     {
         SpawnLayer(RandomFromArray(_yummyLayerPrefabs), 0f);
+        CakeRating.GoodLayers++;
     }
 
     public void SpawnRandomBadLayer()
     {
         SpawnLayer(RandomFromArray(_yuckyLayerPrefabs), 1f);
+        CakeRating.BadLayers++;
     }
 
-    public void SpawnLayer(GameObject prefab, float leaningMultiplier)
+    public void SpawnLayer(CakeLayer prefab, float leaningMultiplier)
     {
         var side = Random.value > 0.5f ? 1f : -1f;
         var offset = Random.Range(_xVariance.x, _xVariance.y) * side * leaningMultiplier;
 
-        GameObject spawnedLayer = Instantiate(prefab, _spawningPoint.position + Vector3.right * offset, Quaternion.identity);
+        GameObject spawnedLayer = Instantiate(prefab.gameObject, _spawningPoint.position + Vector3.right * offset, Quaternion.identity);
         
         var newPos = _spawningPoint.position;
         newPos += Vector3.up * _yOffsetPerLayer;
         _spawningPoint.position = newPos;
     }
 
-    GameObject RandomFromArray(GameObject[] array)
+    CakeLayer RandomFromArray(CakeLayer[] array)
     {
         return array[Random.Range(0, array.Length)];
     }

@@ -180,11 +180,11 @@ Transform:
   m_GameObject: {fileID: 166427106}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.7989585, y: -0.17045793, z: 0.033510696}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2090119914}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &166427108
 SpriteRenderer:
@@ -344,10 +344,10 @@ MonoBehaviour:
   NoteB: {fileID: 5813946005171391575, guid: c9581686a6b86b2468b04272159f809f, type: 3}
   NoteC: {fileID: 7901526494718490134, guid: 56c28082d86e1be4c8134df4247a08b9, type: 3}
   NoteD: {fileID: 8352245614581592433, guid: dcc8efea7da66ca449a5eda82ece580d, type: 3}
-  LineA: {fileID: 166427107}
-  LineB: {fileID: 1182690182}
-  LineC: {fileID: 1353816808}
-  LineD: {fileID: 1690349816}
+  _lineA: {fileID: 166427107}
+  _lineB: {fileID: 1182690182}
+  _lineC: {fileID: 1353816808}
+  _lineD: {fileID: 1690349816}
   _spawnNotesXPos: {fileID: 142955313}
   _clearPrefabsPoint: {fileID: 1478084621}
   speedMultiplier: 8
@@ -434,11 +434,11 @@ Transform:
   m_GameObject: {fileID: 1182690181}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.7989585, y: -1.170458, z: 0.033510696}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 20, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2090119914}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1182690183
 SpriteRenderer:
@@ -518,11 +518,11 @@ Transform:
   m_GameObject: {fileID: 1353816807}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.7989585, y: -2.1704578, z: 0.033510696}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
   m_LocalScale: {x: 20, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2090119914}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1353816809
 SpriteRenderer:
@@ -643,10 +643,10 @@ MonoBehaviour:
   NoteB: {fileID: 0}
   NoteC: {fileID: 0}
   NoteD: {fileID: 0}
-  LineA: {fileID: 0}
-  LineB: {fileID: 0}
-  LineC: {fileID: 0}
-  LineD: {fileID: 0}
+  _lineA: {fileID: 0}
+  _lineB: {fileID: 0}
+  _lineC: {fileID: 0}
+  _lineD: {fileID: 0}
   _spawnNotesXPos: {fileID: 0}
   _clearPrefabsPoint: {fileID: 0}
   speedMultiplier: 1
@@ -750,11 +750,11 @@ Transform:
   m_GameObject: {fileID: 1690349815}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.7989585, y: -3.1704578, z: 0.033510696}
+  m_LocalPosition: {x: 0, y: -3, z: 0}
   m_LocalScale: {x: 20, y: 0.15, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2090119914}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1690349817
 SpriteRenderer:
@@ -930,11 +930,7 @@ Transform:
   m_LocalPosition: {x: 2.7989585, y: 0.17045793, z: -0.033510696}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 166427107}
-  - {fileID: 1182690182}
-  - {fileID: 1353816808}
-  - {fileID: 1690349816}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
@@ -944,6 +940,10 @@ SceneRoots:
   - {fileID: 1714632113}
   - {fileID: 1686855471}
   - {fileID: 833441015}
+  - {fileID: 166427107}
+  - {fileID: 1182690182}
+  - {fileID: 1353816808}
+  - {fileID: 1690349816}
   - {fileID: 2090119914}
   - {fileID: 226671069}
   - {fileID: 1093443775}

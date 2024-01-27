@@ -249,9 +249,9 @@ MonoBehaviour:
   _yOffsetPerLayer: 0.5
   _xVariance: {x: 0.2, y: 0.6}
   _yummyLayerPrefabs:
-  - {fileID: 2668718437851343484, guid: 89a173f6292552a47a908b4346737d32, type: 3}
-  _yuckyLayerPrefabs:
   - {fileID: 7023205284857352885, guid: 53bc735c4a2d6da469e9a9f95922b025, type: 3}
+  _yuckyLayerPrefabs:
+  - {fileID: 2668718437851343484, guid: 89a173f6292552a47a908b4346737d32, type: 3}
   _spawningPoint: {fileID: 2118877701}
 --- !u!4 &955779783
 Transform:

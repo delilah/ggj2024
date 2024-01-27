@@ -421,6 +421,8 @@ MonoBehaviour:
   - {fileID: 4953242198795087411, guid: 1c4c1f64a3739ba48a92a867714b1898, type: 3}
   - {fileID: 4953242198795087411, guid: 161f1e7d1c1d6f2478fcb6a6e88766ea, type: 3}
   _spawningPoint: {fileID: 2118877701}
+  _highestCake: {fileID: 734023243}
+  _offset: {x: 0, y: 0, z: 0}
 --- !u!4 &955779783
 Transform:
   m_ObjectHideFlags: 0
@@ -534,7 +536,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.10948508, y: 0.000000015213823, z: -0.0000000016757605, w: 0.99398845}
+  m_LocalRotation: {x: 0.109485105, y: -0.000000021233065, z: 0.0000000023387638, w: 0.99398845}
   m_LocalPosition: {x: 0, y: 1.62, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -639,7 +641,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1079750091}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.10948508, y: 0.000000015213823, z: -0.0000000016757605, w: 0.99398845}
+  m_LocalRotation: {x: 0.109485105, y: -0.000000021233065, z: 0.0000000023387638, w: 0.99398845}
   m_LocalPosition: {x: 0, y: 1.62, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

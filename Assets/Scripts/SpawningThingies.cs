@@ -5,11 +5,13 @@ using UnityEngine;
 public class SpawningThingies : MonoBehaviour
 {
     [SerializeField] private float _yOffsetPerLayer = 0.5f;
+    [SerializeField] private float _yOffsetCamera = 1.5f;
     [SerializeField] private Vector2 _xVariance = new Vector2(0.1f, 0.2f);
 
     [SerializeField] private CakeLayer[] _yummyLayerPrefabs;
     [SerializeField] private CakeLayer[] _yuckyLayerPrefabs;
     [SerializeField] private Transform _spawningPoint;
+    [SerializeField] private Transform _highestCake;
 
     Camera _camera;
 
@@ -41,6 +43,14 @@ public class SpawningThingies : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.B)) SpawnRandomBadLayer();
     }
 
+    private void LateUpdate()
+    {
+        var newPos = _spawningPoint.position;
+        //newPos += Vector3.up * _yOffsetPerLayer;
+        newPos.y = _camera.transform.position.y + _yOffsetCamera;
+        _spawningPoint.position = newPos;
+    }
+
     public void SpawnRandomGoodLayer()
     {
         SpawnLayer(RandomFromArray(_yummyLayerPrefabs), 0f);
@@ -61,9 +71,7 @@ public class SpawningThingies : MonoBehaviour
         var y = Random.Range(0f, 360f);
         GameObject spawnedLayer = Instantiate(prefab.gameObject, _spawningPoint.position + Vector3.right * offset, Quaternion.Euler(0f, y, 0f));
         
-        var newPos = _spawningPoint.position;
-        newPos += Vector3.up * _yOffsetPerLayer;
-        _spawningPoint.position = newPos;
+        
     }
 
     CakeLayer RandomFromArray(CakeLayer[] array)

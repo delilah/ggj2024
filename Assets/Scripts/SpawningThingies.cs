@@ -11,16 +11,24 @@ public class SpawningThingies : MonoBehaviour
     [SerializeField] private CakeLayer[] _yuckyLayerPrefabs;
     [SerializeField] private Transform _spawningPoint;
 
+    Camera _camera;
+
     void Start()
     {
-        var camera = Camera.main;
+        _camera = Camera.main;
+        UpdateSpawnPoint();
+    }
+
+    [ContextMenu("UpdatePoint")]
+    public void UpdateSpawnPoint()
+    {
         Vector3[] frustumCorners = new Vector3[4];
-        camera.CalculateFrustumCorners(
+        _camera.CalculateFrustumCorners(
             new Rect(0, 0, 1, 1), 
-            camera.transform.InverseTransformPoint(_spawningPoint.position).z, 
+            _camera.transform.InverseTransformPoint(_spawningPoint.position).z, 
             Camera.MonoOrStereoscopicEye.Mono, frustumCorners);
 
-        var worldSpaceCorner = camera.transform.TransformVector(frustumCorners[1]);
+        var worldSpaceCorner = _camera.transform.TransformVector(frustumCorners[1]);
 
         var newPos = _spawningPoint.position;
         newPos.y = worldSpaceCorner.y;

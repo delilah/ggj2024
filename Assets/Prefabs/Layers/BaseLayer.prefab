@@ -352,6 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ff8428aaf656744eb7ddb55b4e79263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cakeLayer: 6
   _fallingClips: []
   _landedClips: []
   _fallingSource: {fileID: 6627339142964145185}

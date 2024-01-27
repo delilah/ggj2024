@@ -4,6 +4,7 @@ using UnityEngine;
 public class CakeLayer : MonoBehaviour
 {
     private bool _hasLanded = false;
+    [SerializeField] private int _cakeLayer;
 
     [SerializeField] AudioClip[] _fallingClips;
     [SerializeField] AudioClip[] _landedClips;
@@ -21,6 +22,10 @@ public class CakeLayer : MonoBehaviour
         if (_hasLanded)
         {
             return;
+        }
+        else
+        {
+            gameObject.layer = _cakeLayer;
         }
         _hasLanded = true;
 

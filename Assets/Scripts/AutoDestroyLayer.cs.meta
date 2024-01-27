@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 7a1e706954438184f9013924b975f665
+<<<<<<<< HEAD:Assets/Scripts/AutoDestroyLayer.cs.meta
+guid: 4540a222fb5650c49b502259306448e9
+========
+guid: 5f1420d606e218a4e86c21b93ed9e309
+>>>>>>>> notesTest:Assets/Scripts/Midi/Mover.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2

@@ -5,10 +5,10 @@ using UnityEngine;
 public class SpawningThingies : MonoBehaviour
 {
     [SerializeField] private float _yOffsetPerLayer = 0.5f;
+    [SerializeField] private Vector2 _xVariance = new Vector2(0.1f, 0.2f);
 
-    public GameObject[] layerPrefabs;
-    //public GameObject[] YummyLayerPrefabs;
-    //public GameObject[] YuckyLayerPrefabs;
+    [SerializeField] private GameObject[] _yummyLayerPrefabs;
+    [SerializeField] private GameObject[] _yuckyLayerPrefabs;
     [SerializeField] private Transform _spawningPoint;
 
     void Start()
@@ -22,33 +22,41 @@ public class SpawningThingies : MonoBehaviour
 
         var worldSpaceCorner = camera.transform.TransformVector(frustumCorners[1]);
 
-
         var newPos = _spawningPoint.position;
         newPos.y = worldSpaceCorner.y;
         _spawningPoint.position = newPos;
-
-        // every 2 seconds for now, will be based on action later
-        InvokeRepeating("SpawnRandomLayer", 0f, 2f);
     }
 
-    public void SpawnRandomLayer()
+    private void Update()
     {
-        // random for now
-        int layerType = Random.Range(0, layerPrefabs.Length);
-        SpawnLayer(layerType);
+        if (Input.GetKeyDown(KeyCode.G)) SpawnRandomGoodLayer();
+        if (Input.GetKeyDown(KeyCode.B)) SpawnRandomBadLayer();
     }
 
-    public void SpawnLayer(int layerType)
+    public void SpawnRandomGoodLayer()
     {
-        if (layerType < 0 || layerType >= layerPrefabs.Length)
-        {
-            Debug.LogError("Invalid layer type!");
-            return;
-        }
+        SpawnLayer(RandomFromArray(_yummyLayerPrefabs), 0f);
+    }
 
-        GameObject spawnedLayer = Instantiate(layerPrefabs[layerType], _spawningPoint.position, Quaternion.identity);
+    public void SpawnRandomBadLayer()
+    {
+        SpawnLayer(RandomFromArray(_yuckyLayerPrefabs), 1f);
+    }
+
+    public void SpawnLayer(GameObject prefab, float leaningMultiplier)
+    {
+        var side = Random.value > 0.5f ? 1f : -1f;
+        var offset = Random.Range(_xVariance.x, _xVariance.y) * side * leaningMultiplier;
+
+        GameObject spawnedLayer = Instantiate(prefab, _spawningPoint.position + Vector3.right * offset, Quaternion.identity);
+        
         var newPos = _spawningPoint.position;
         newPos += Vector3.up * _yOffsetPerLayer;
         _spawningPoint.position = newPos;
+    }
+
+    GameObject RandomFromArray(GameObject[] array)
+    {
+        return array[Random.Range(0, array.Length)];
     }
 }

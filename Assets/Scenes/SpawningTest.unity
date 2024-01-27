@@ -476,7 +476,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2118877701}
   m_Layer: 0
-  m_Name: HERE
+  m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0

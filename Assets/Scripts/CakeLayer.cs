@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 public class CakeLayer : MonoBehaviour
@@ -8,13 +9,27 @@ public class CakeLayer : MonoBehaviour
 
     [SerializeField] AudioClip[] _fallingClips;
     [SerializeField] AudioClip[] _landedClips;
+    [SerializeField] AudioClip[] _destroyedClips;
 
-    [SerializeField] AudioSource _fallingSource;
-    [SerializeField] AudioSource _landedSource;
+    private SoundPlayer _soundPlayer;
+
+    private const float _minimumSceneY = -3;
 
     private void Start()
     {
-        PlayRandomClip(_fallingClips, _fallingSource);
+        var soundPlayerGameObject = GameObject.Find("SoundPlayer").gameObject;
+
+        _soundPlayer = soundPlayerGameObject.GetComponent<SoundPlayer>();
+
+        _soundPlayer.PlayRandomSample(_fallingClips);
+    }
+
+    private void Update()
+    {
+        if (transform.position.y < _minimumSceneY)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -29,23 +44,11 @@ public class CakeLayer : MonoBehaviour
         }
         _hasLanded = true;
 
-        Debug.Log("Collision started");
-        PlayRandomClip(_landedClips, _landedSource);
-        Debug.Log("Collision ended");
+        _soundPlayer.PlayRandomSample(_landedClips);
     }
 
-    private void PlayRandomClip(AudioClip[] audioClips, AudioSource audioSource)
+    private void OnDestroy()
     {
-        if ( audioClips.Length == 0)
-        {
-            throw new InvalidOperationException("No AudioClips available on layer.");
-        }
-
-        if(audioSource == null)
-        {
-            throw new InvalidOperationException("No AudioSource defined.");
-        }
-
-        audioSource.PlayOneShot(audioClips[UnityEngine.Random.Range(0, audioClips.Length - 1)]);
+        _soundPlayer.PlayRandomSample(_destroyedClips);
     }
 }

@@ -22,5 +22,7 @@ public class HighestCake : MonoBehaviour
         {
             Debug.DrawLine(transform.position, highestPoint, Color.yellow);
         }
+
+        CakeRating.HeightReached = _highestCakeTransform.position.y;
     }
 }

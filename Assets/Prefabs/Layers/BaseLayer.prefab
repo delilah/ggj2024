@@ -355,5 +355,4 @@ MonoBehaviour:
   _cakeLayer: 6
   _fallingClips: []
   _landedClips: []
-  _fallingSource: {fileID: 6627339142964145185}
-  _landedSource: {fileID: 8422227941695537071}
+  _destroyedClips: []

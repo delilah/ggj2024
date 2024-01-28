@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class SpawningThingies : MonoBehaviour
 {
-    [SerializeField] private float _yOffsetPerLayer = 0.5f;
     [SerializeField] private float _yOffsetCamera = 1.5f;
     [SerializeField] private Vector2 _xVariance = new Vector2(0.1f, 0.2f);
 
@@ -14,6 +13,18 @@ public class SpawningThingies : MonoBehaviour
     [SerializeField] private Transform _highestCake;
 
     Camera _camera;
+
+    private void OnEnable()
+    {
+        GameMessages.OnGoodLayerRequested += SpawnRandomGoodLayer;
+        GameMessages.OnBadLayerRequested += SpawnRandomBadLayer;
+    }
+
+    private void OnDisable()
+    {
+        GameMessages.OnGoodLayerRequested -= SpawnRandomGoodLayer;
+        GameMessages.OnBadLayerRequested -= SpawnRandomBadLayer;
+    }
 
     void Start()
     {
@@ -37,16 +48,17 @@ public class SpawningThingies : MonoBehaviour
         _spawningPoint.position = newPos;
     }
 
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.G)) SpawnRandomGoodLayer();
         if (Input.GetKeyDown(KeyCode.B)) SpawnRandomBadLayer();
     }
+#endif
 
     private void LateUpdate()
     {
         var newPos = _spawningPoint.position;
-        //newPos += Vector3.up * _yOffsetPerLayer;
         newPos.y = _camera.transform.position.y + _yOffsetCamera;
         _spawningPoint.position = newPos;
     }
@@ -70,8 +82,6 @@ public class SpawningThingies : MonoBehaviour
 
         var y = Random.Range(0f, 360f);
         GameObject spawnedLayer = Instantiate(prefab.gameObject, _spawningPoint.position + Vector3.right * offset, Quaternion.Euler(0f, y, 0f));
-        
-        
     }
 
     CakeLayer RandomFromArray(CakeLayer[] array)

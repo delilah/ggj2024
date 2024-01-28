@@ -13,7 +13,7 @@ public class CakeLayer : MonoBehaviour
 
     [SerializeField] bool _clipIsGood;
 
-    private const float _minimumSceneY = -3;
+    [SerializeField] private int _minimumSceneY = -5;
 
     private void Start()
     {

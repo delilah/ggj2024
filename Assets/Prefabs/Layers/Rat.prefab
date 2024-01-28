@@ -178,6 +178,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
+      propertyPath: _destroyedClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
       propertyPath: _landedClips.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: 2007477877394ed49bee4462a96a6473, type: 3}
@@ -185,6 +189,10 @@ PrefabInstance:
       propertyPath: _fallingClips.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: 5cf8304b908858e439d5376b46835d92, type: 3}
+    - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
+      propertyPath: _destroyedClips.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 684086385addfdb46b7c99705adc0ee0, type: 3}
     - target: {fileID: 773434473774349631, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
       propertyPath: m_Material
       value: 

@@ -293,7 +293,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -414,6 +414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _yOffsetPerLayer: 0.5
+  _yOffsetCamera: 1.5
   _xVariance: {x: 0.2, y: 0.4}
   _yummyLayerPrefabs:
   - {fileID: 4953242198795087411, guid: 9ff9a91308c14c043975a6ce83469bde, type: 3}
@@ -422,7 +423,6 @@ MonoBehaviour:
   - {fileID: 4953242198795087411, guid: 161f1e7d1c1d6f2478fcb6a6e88766ea, type: 3}
   _spawningPoint: {fileID: 2118877701}
   _highestCake: {fileID: 734023243}
-  _offset: {x: 0, y: 0, z: 0}
 --- !u!4 &955779783
 Transform:
   m_ObjectHideFlags: 0
@@ -516,7 +516,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 103
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -536,8 +536,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.109485105, y: -0.000000021233065, z: 0.0000000023387638, w: 0.99398845}
-  m_LocalPosition: {x: 0, y: 1.62, z: -10}
+  m_LocalRotation: {x: -0.012497048, y: -0.000000017213427, z: -2.1513381e-10, w: 0.9999219}
+  m_LocalPosition: {x: 0, y: -0.86, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -641,8 +641,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1079750091}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.109485105, y: -0.000000021233065, z: 0.0000000023387638, w: 0.99398845}
-  m_LocalPosition: {x: 0, y: 1.62, z: -10}
+  m_LocalRotation: {x: -0.012497048, y: -0.000000017213427, z: -2.1513381e-10, w: 0.9999219}
+  m_LocalPosition: {x: 0, y: -0.86, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -824,7 +824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 2.23, z: -10}
+  m_FollowOffset: {x: 0, y: -0.25, z: -10}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1

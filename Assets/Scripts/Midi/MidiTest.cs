@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MidiTest : MonoBehaviour
 {
+
+    public static MidiTest Instance { get; private set; }
     public List<TimedNote> notes;
     private Queue<TimedNote> _notesQueue;
     private List<GameObject> _spawnedNotes = new List<GameObject>();
@@ -23,6 +25,19 @@ public class MidiTest : MonoBehaviour
     [SerializeField] private GameObject _clearPrefabsPoint;
 
     private float _currentTime = 0f;
+
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        } 
+        else 
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
@@ -98,6 +113,20 @@ void DebugZero(GameObject spawnedNote, Vector3 movement)
     {
         Debug.Log($"Prefab {spawnedNote.name} crosses x=0 at time {_currentTime} ");
     }
+}
+
+public GameObject GetNoteOnTheBeat()
+{
+    foreach (var note in _spawnedNotes)
+    {
+        // Instead of getting the exact note on 0, I look for a grace range around that position
+        if (note.transform.position.x >= -1f && note.transform.position.x <= 1f)
+        {
+            return note;
+        }
+    }
+
+    return null;
 }
 
 

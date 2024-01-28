@@ -31,14 +31,53 @@ public class SmashTheNotes : MonoBehaviour
 
     void Update()
     {
+        GameObject noteInBeatRange = MidiTest.Instance.GetNoteOnTheBeat();
+
         if (pawType == PawType.Left && (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a")))
         {
-            Move();
+            if (noteInBeatRange != null)
+            {
+                var noteType = noteInBeatRange.name;
+
+                 Debug.Log("=======================================: " + noteType + noteInBeatRange.transform.position.y);
+
+
+                if (noteType.Contains("noteA") || noteType.Contains("noteC"))
+                {
+                    Debug.Log("++++++++++++++++leftpaw: " + noteInBeatRange.transform.position.y);
+                    MoveToNoteAndReturn(noteInBeatRange);
+                }
+            }
+            else
+            {
+                Move();
+            }
+
             hasMoved = true;
         }
         else if (pawType == PawType.Right && (Input.GetKey(KeyCode.RightArrow) || Input.GetKey("d")))
         {
-            Move();
+            if (noteInBeatRange != null)
+            {
+
+
+
+                var noteType = noteInBeatRange.name;
+
+                                Debug.Log("=======================================: " + noteType + noteInBeatRange.transform.position.y);
+
+                 if (noteType.Contains("noteB") || noteType.Contains("noteD"))
+                {
+                                        Debug.Log("+++++++++++++++rightpaw: " + noteInBeatRange.transform.position.y);
+
+                    MoveToNoteAndReturn(noteInBeatRange);
+                }
+            }
+            else
+            {
+                Move();
+            }
+
             hasMoved = true;
         }
 
@@ -71,6 +110,14 @@ public class SmashTheNotes : MonoBehaviour
         var newPosition = new Vector3(this.transform.position.x, offset, -1.0f);
         this.GetComponent<Rigidbody>().MovePosition(newPosition);
         actionTimer = 0.1f; // reset timer
+    }
+
+    private void MoveToNoteAndReturn(GameObject note)
+    {
+        var newPosition = new Vector3(this.transform.position.x, note.transform.position.y, -1.0f);
+        this.GetComponent<Rigidbody>().MovePosition(newPosition);
+        hitDetected = true; 
+        ReturnToInitialPosition(); 
     }
 
     private void ReturnToInitialPosition()

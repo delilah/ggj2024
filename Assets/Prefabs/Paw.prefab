@@ -107,6 +107,7 @@ MonoBehaviour:
   noteLayer:
     serializedVersion: 2
     m_Bits: 64
+  pawSphereCollider: {fileID: 187357006714718576}
 --- !u!135 &187357006714718576
 SphereCollider:
   m_ObjectHideFlags: 0

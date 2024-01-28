@@ -250,14 +250,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PawLeft
       objectReference: {fileID: 0}
-    - target: {fileID: 2178699621592414167, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
-      propertyPath: colliderRadius
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 2178699621592414167, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
-      propertyPath: noteLayer.m_Bits
-      value: 64
-      objectReference: {fileID: 0}
     - target: {fileID: 7765660445197104425, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4
@@ -463,8 +455,8 @@ PrefabInstance:
       value: PawRight
       objectReference: {fileID: 0}
     - target: {fileID: 2178699621592414167, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
-      propertyPath: colliderRadius
-      value: 0.6
+      propertyPath: pawType
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7765660445197104425, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
       propertyPath: m_LocalPosition.x

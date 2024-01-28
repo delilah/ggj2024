@@ -100,7 +100,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e22e42b3ea5bde9469c90d3196769d66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pawType: 0
   _offsetLeft: 0
+  _offsetRight: 2
+  colliderRadius: 0.6
+  noteLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!135 &187357006714718576
 SphereCollider:
   m_ObjectHideFlags: 0

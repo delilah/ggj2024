@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MidiTest : MonoBehaviour
 {
-
     public static MidiTest Instance { get; private set; }
     public List<TimedNote> notes;
     private Queue<TimedNote> _notesQueue;
@@ -23,9 +22,10 @@ public class MidiTest : MonoBehaviour
 
     [SerializeField] private GameObject _spawnNotesXPos;
     [SerializeField] private GameObject _clearPrefabsPoint;
+    [SerializeField] private GameObject _hitSpotLeft;
+    [SerializeField] private GameObject _hitSpotRight;
 
     private float _currentTime = 0f;
-
 
     void Awake()
     {
@@ -43,11 +43,6 @@ public class MidiTest : MonoBehaviour
     {
         notes = MidiReader.GetNotesList("songtest");
         _notesQueue = new Queue<TimedNote>(notes);
-
-       // foreach (var note in notes)
-       // {
-      //      Debug.Log("Note time: " + note.TimeInSeconds);
-        //}
     }
 
     void Update()
@@ -57,70 +52,67 @@ public class MidiTest : MonoBehaviour
         MoveAndClearNotes();
     }
 
-void SpawnNotes()
-{
-    const float speed = 8f; // Set a constant speed
-    var spawnDistance = _spawnNotesXPos.transform.position.x;
-    
-    while (_notesQueue.Count > 0)
+    void SpawnNotes()
     {
-        var currentNote = _notesQueue.Peek();
-        var spawnTime = currentNote.TimeInSeconds - spawnDistance / speed;
+        const float speed = 8f;
+        var spawnDistance = _spawnNotesXPos.transform.position.x;
         
-        // If it's not yet time to spawn this note, break the loop
-        if (spawnTime > _currentTime) break;
-
-        var spawnedNote = SpawnNotePrefab(currentNote);
-        _notesQueue.Dequeue();
-
-        _speedMultipliers[spawnedNote] = speed;
-        _spawnedNotes.Add(spawnedNote);
-    }
-}
-
-void MoveAndClearNotes()
-{
-    for (int i = _spawnedNotes.Count - 1; i >= 0; i--)
-    {
-        var spawnedNote = _spawnedNotes[i];
-        var speed = _speedMultipliers[spawnedNote];
-        var movement = new Vector3(-speed * Time.deltaTime, 0, 0);
-
-        //DebugZero(spawnedNote, movement);
-
-        // Calculate new position
-        var potentialNewPos = spawnedNote.transform.position + movement;
-
-        // Calculate position in relation to the clearPrefabsPoint and evaluate cleanup
-        if (potentialNewPos.x < _clearPrefabsPoint.transform.position.x)
+        while (_notesQueue.Count > 0)
         {
-            _speedMultipliers.Remove(spawnedNote);
-            Destroy(spawnedNote);
-            _spawnedNotes.RemoveAt(i);
-        }
-        else
-        {
-            // Keep moving until reaches the ClearPrefabsPoint
-            spawnedNote.transform.Translate(movement);
+            var currentNote = _notesQueue.Peek();
+
+            if (currentNote.Note == 36 || currentNote.Note == 37)
+            {
+                spawnDistance = Mathf.Abs(_hitSpotLeft.transform.position.x - _spawnNotesXPos.transform.position.x);
+            }
+            else if (currentNote.Note == 38 || currentNote.Note == 39)
+            {
+                spawnDistance = Mathf.Abs(_hitSpotRight.transform.position.x - _spawnNotesXPos.transform.position.x);
+            }
+            
+            var spawnTime = currentNote.TimeInSeconds - spawnDistance / speed;
+            
+            if (spawnTime > _currentTime) break;
+
+            var spawnedNote = SpawnNotePrefab(currentNote);
+            _notesQueue.Dequeue();
+
+            _speedMultipliers[spawnedNote] = speed;
+            _spawnedNotes.Add(spawnedNote);
         }
     }
-}
 
-void DebugZero(GameObject spawnedNote, Vector3 movement)
-{
-    // Debug to check the value of the prefab when it reaches the middle/hot area
-    if (spawnedNote.transform.position.x >= 0 && spawnedNote.transform.position.x + movement.x < 0)
+    void MoveAndClearNotes()
     {
-        Debug.Log($"Prefab {spawnedNote.name} crosses x=0 at time {_currentTime} ");
-    }
-}
+        for (int i = _spawnedNotes.Count - 1; i >= 0; i--)
+        {
+            var spawnedNote = _spawnedNotes[i];
+            var speed = _speedMultipliers[spawnedNote];
+            var movement = new Vector3(-speed * Time.deltaTime, 0, 0);
 
-public GameObject GetNoteOnTheBeat()
+            var potentialNewPos = spawnedNote.transform.position + movement;
+            
+            if (potentialNewPos.x < _clearPrefabsPoint.transform.position.x)
+            {
+                _speedMultipliers.Remove(spawnedNote);
+                Destroy(spawnedNote);
+                _spawnedNotes.RemoveAt(i);
+            }
+            else
+            {
+                spawnedNote.transform.Translate(movement);
+            }
+        }
+    }
+
+public GameObject GetNoteOnTheBeatLeft(float range)
 {
+    float leftBound = _hitSpotLeft.transform.position.x - range;
+    float rightBound = _hitSpotLeft.transform.position.x + range;
+
     foreach (var note in _spawnedNotes)
     {
-        // Instead of getting the exact note on 0, I look for a grace range around that position
-        if (note.transform.position.x >= -1f && note.transform.position.x <= 1f)
+        if (note.transform.position.x >= leftBound && note.transform.position.x <= rightBound)
         {
             return note;
         }
@@ -129,6 +121,21 @@ public GameObject GetNoteOnTheBeat()
     return null;
 }
 
+public GameObject GetNoteOnTheBeatRight(float range)
+{
+    float leftBound = _hitSpotRight.transform.position.x - range;
+    float rightBound = _hitSpotRight.transform.position.x + range;
+
+    foreach (var note in _spawnedNotes)
+    {
+        if (note.transform.position.x >= leftBound && note.transform.position.x <= rightBound)
+        {
+            return note;
+        }
+    }
+
+    return null;
+}
 
     GameObject SpawnNotePrefab(TimedNote currentNote)
     {
@@ -158,7 +165,7 @@ public GameObject GetNoteOnTheBeat()
         }
     }
 
-    float GetHeightAdjustment(int note)
+   float GetHeightAdjustment(int note)
     {
         switch (note)
         {

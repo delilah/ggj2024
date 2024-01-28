@@ -19,6 +19,7 @@ public class SmashTheNotes : MonoBehaviour
     [SerializeField] private float _offsetRight = 1f;
     [SerializeField] private float colliderRadius;
     [SerializeField] private LayerMask noteLayer;
+    [SerializeField] private float _graceRange = 2f;
 
     // Actions
     public static event Action GoodLayer;
@@ -31,21 +32,22 @@ public class SmashTheNotes : MonoBehaviour
 
     void Update()
     {
-        GameObject noteInBeatRange = MidiTest.Instance.GetNoteOnTheBeat();
+
+        GameObject noteInBeatRangeLeft = MidiTest.Instance.GetNoteOnTheBeatLeft(_graceRange);
+        GameObject noteInBeatRangeRight = MidiTest.Instance.GetNoteOnTheBeatRight(_graceRange);
 
         if (pawType == PawType.Left && (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a")))
         {
-            if (noteInBeatRange != null)
+            if (noteInBeatRangeLeft != null)
             {
-                var noteType = noteInBeatRange.name;
+                var noteType = noteInBeatRangeLeft.name;
 
-                 Debug.Log("=======================================: " + noteType + noteInBeatRange.transform.position.y);
+                 Debug.Log("=======================================: " + noteType + noteInBeatRangeLeft.transform.position.y);
 
 
                 if (noteType.Contains("noteA") || noteType.Contains("noteB"))
                 {
-                    Debug.Log("++++++++++++++++leftpaw: " + noteInBeatRange.transform.position.y);
-                    MoveToNoteAndReturn(noteInBeatRange);
+                    MoveToNoteAndReturn(noteInBeatRangeLeft);
                 }
             }
             else
@@ -57,20 +59,17 @@ public class SmashTheNotes : MonoBehaviour
         }
         else if (pawType == PawType.Right && (Input.GetKey(KeyCode.RightArrow) || Input.GetKey("d")))
         {
-            if (noteInBeatRange != null)
+            if (noteInBeatRangeRight != null)
             {
+                var noteType = noteInBeatRangeRight.name;
 
-
-
-                var noteType = noteInBeatRange.name;
-
-                                Debug.Log("=======================================: " + noteType + noteInBeatRange.transform.position.y);
+                                Debug.Log("=======================================: " + noteType + noteInBeatRangeRight.transform.position.y);
 
                  if (noteType.Contains("noteC") || noteType.Contains("noteD"))
                 {
-                                        Debug.Log("+++++++++++++++rightpaw: " + noteInBeatRange.transform.position.y);
+                                        Debug.Log("+++++++++++++++rightpaw: " + noteInBeatRangeRight.transform.position.y);
 
-                    MoveToNoteAndReturn(noteInBeatRange);
+                    MoveToNoteAndReturn(noteInBeatRangeRight);
                 }
             }
             else

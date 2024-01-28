@@ -95,7 +95,6 @@ public class SmashTheNotes : MonoBehaviour
 {
     // Workaround: we already know the notes are in our range when we move the paw
         hitDetected = true;
-        Debug.Log($"Hit {pawType}");
 
          _successCounter++;
 

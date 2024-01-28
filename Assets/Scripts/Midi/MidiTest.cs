@@ -56,7 +56,6 @@ public class MidiTest : MonoBehaviour
         // Check for gameover / end condition
         if (!_isGameOver && _notesQueue.Count == 0 && _spawnedNotes.Count == 0)
             {
-                Debug.Log("End of game");
                 GameMessages.NotifyGameOver();
                  _isGameOver = true;
             }

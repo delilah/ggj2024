@@ -5,11 +5,15 @@ using UnityEngine;
 
 public class SoundPlayer : MonoBehaviour
 {
+    public static SoundPlayer Instance { get; private set; }
+
     private Dictionary<string, AudioSource> _audioSources;
 
     private void Start()
     {
         _audioSources = GetComponentsInChildren<AudioSource>().ToDictionary(x => x.name, x => x);
+
+        Instance = this;
     }
 
     public void PlayRandomSample(AudioClip[] audioClips)
@@ -17,7 +21,7 @@ public class SoundPlayer : MonoBehaviour
         PlayRandomClip(audioClips, "Samples");
     }
 
-    public void PlayRandomClip(AudioClip[] audioClips, string type)
+    private void PlayRandomClip(AudioClip[] audioClips, string type)
     {
         if (!_audioSources.ContainsKey(type))
         {
@@ -29,6 +33,6 @@ public class SoundPlayer : MonoBehaviour
             return;
         }
 
-        _audioSources[type].PlayOneShot(audioClips[UnityEngine.Random.Range(0, audioClips.Length - 1)]);
+        _audioSources[type].PlayOneShot(audioClips[UnityEngine.Random.Range(0, audioClips.Length)]);
     }
 }

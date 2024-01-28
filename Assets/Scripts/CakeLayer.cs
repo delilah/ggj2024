@@ -1,27 +1,30 @@
 using System;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 public class CakeLayer : MonoBehaviour
 {
     private bool _hasLanded = false;
+    private float _layerHeight = 0;
+
     [SerializeField] private int _cakeLayer;
 
     [SerializeField] AudioClip[] _fallingClips;
     [SerializeField] AudioClip[] _landedClips;
     [SerializeField] AudioClip[] _destroyedClips;
 
-    private SoundPlayer _soundPlayer;
+    [SerializeField] bool _clipIsGood;
 
-    [SerializeField] private int _minimumSceneY = -5;
+    [SerializeField] private int _minimumSceneY = 0;
+
+    [SerializeField] private GameObject[] _collisionFxs;
 
     private void Start()
     {
-        var soundPlayerGameObject = GameObject.Find("SoundPlayer").gameObject;
+        _layerHeight = gameObject.GetComponent<BoxCollider>().bounds.extents.y;
 
-        _soundPlayer = soundPlayerGameObject.GetComponent<SoundPlayer>();
-
-        _soundPlayer.PlayRandomSample(_fallingClips);
+        SoundPlayer.Instance.PlayRandomSample(_fallingClips);
     }
 
     private void Update()
@@ -44,11 +47,39 @@ public class CakeLayer : MonoBehaviour
         }
         _hasLanded = true;
 
-        _soundPlayer.PlayRandomSample(_landedClips);
+        SoundPlayer.Instance.PlayRandomSample(_landedClips);
+
+        if (_clipIsGood)
+        {
+            CatAudioManager.Instance.PlayGoodLayer();
+        }
+        else
+        {
+            CatAudioManager.Instance.PlayBadLayer();
+        }
+
+        RenderFx();
     }
 
     private void OnDestroy()
     {
-        _soundPlayer.PlayRandomSample(_destroyedClips);
+        if (!gameObject.scene.isLoaded)
+            return;
+
+        SoundPlayer.Instance.PlayRandomSample(_destroyedClips);
+
+        RenderFx();
+    }
+
+    private void RenderFx()
+    {
+        var position = gameObject.transform.position;
+        position.y -= _layerHeight;
+
+        foreach (var collissionFx in _collisionFxs)
+        {
+            var collissionFxInstance = Instantiate(collissionFx, position, gameObject.transform.rotation);
+            Destroy(collissionFxInstance, 2.5f);
+        }
     }
 }

@@ -8,12 +8,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Intro.unity
     guid: 538423c87b42bbd4c8a044150d32768e
-  - enabled: 0
-    path: Assets/Scenes/HereMianGame.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/SpawningTest.unity
-    guid: 06b1ffeeb0002cc4e937f3b074f70b50
+    path: Assets/Scenes/MainGame.unity
+    guid: 0ea85e9ac326a3740b43476cf5d327ea
   - enabled: 1
     path: Assets/Scenes/Results.unity
     guid: 63edebaf3f89c94449f6ec91a18cdb5a

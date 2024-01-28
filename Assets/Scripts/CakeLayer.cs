@@ -1,10 +1,13 @@
 using System;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 public class CakeLayer : MonoBehaviour
 {
     private bool _hasLanded = false;
+    private float _layerHeight = 0;
+
     [SerializeField] private int _cakeLayer;
 
     [SerializeField] AudioClip[] _fallingClips;
@@ -15,8 +18,12 @@ public class CakeLayer : MonoBehaviour
 
     [SerializeField] private int _minimumSceneY = -5;
 
+    [SerializeField] private GameObject[] _collisionFxs;
+
     private void Start()
     {
+        _layerHeight = gameObject.GetComponent<BoxCollider>().bounds.extents.y;
+
         SoundPlayer.Instance.PlayRandomSample(_fallingClips);
     }
 
@@ -50,10 +57,28 @@ public class CakeLayer : MonoBehaviour
         {
             CatAudioManager.Instance.PlayBadLayer();
         }
+
+        RenderFx();
     }
 
     private void OnDestroy()
     {
+        if (!gameObject.scene.isLoaded)
+            return;
+
         SoundPlayer.Instance.PlayRandomSample(_destroyedClips);
+
+        RenderFx();
+    }
+
+    private void RenderFx()
+    {
+        var position = gameObject.transform.position;
+        position.y -= _layerHeight / 2;
+        foreach (var collissionFx in _collisionFxs)
+        {
+            var collissionFxInstance = Instantiate(collissionFx, position, Quaternion.identity);
+            Destroy(collissionFxInstance, 2.5f);
+        }
     }
 }

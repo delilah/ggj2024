@@ -100,6 +100,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
+      propertyPath: _collisionFxs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
       propertyPath: _fallingClips.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -111,6 +115,14 @@ PrefabInstance:
       propertyPath: _landedClips.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: 2007477877394ed49bee4462a96a6473, type: 3}
+    - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
+      propertyPath: _collisionFxs.Array.data[0]
+      value: 
+      objectReference: {fileID: 3372266446065850121, guid: b3fb96a7a1008414c900540b31986203, type: 3}
+    - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
+      propertyPath: _collisionFxs.Array.data[1]
+      value: 
+      objectReference: {fileID: 3929734706616964780, guid: 0abfa17e760b0fc4d89bc697983ed9da, type: 3}
     - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
       propertyPath: _fallingClips.Array.data[0]
       value: 

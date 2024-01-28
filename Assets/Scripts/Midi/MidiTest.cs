@@ -22,8 +22,8 @@ public class MidiTest : MonoBehaviour
 
     [SerializeField] private GameObject _spawnNotesXPos;
     [SerializeField] private GameObject _clearPrefabsPoint;
-    [SerializeField] private GameObject _hitSpotLeft;
-    [SerializeField] private GameObject _hitSpotRight;
+    [SerializeField] private Transform _hitSpotLeft;
+    [SerializeField] private Transform _hitSpotRight;
 
     private float _currentTime = 0f;
 
@@ -63,11 +63,11 @@ public class MidiTest : MonoBehaviour
 
             if (currentNote.Note == 36 || currentNote.Note == 37)
             {
-                spawnDistance = Mathf.Abs(_hitSpotLeft.transform.position.x - _spawnNotesXPos.transform.position.x);
+                spawnDistance = Mathf.Abs(_hitSpotLeft.position.x - _spawnNotesXPos.transform.position.x);
             }
             else if (currentNote.Note == 38 || currentNote.Note == 39)
             {
-                spawnDistance = Mathf.Abs(_hitSpotRight.transform.position.x - _spawnNotesXPos.transform.position.x);
+                spawnDistance = Mathf.Abs(_hitSpotRight.position.x - _spawnNotesXPos.transform.position.x);
             }
             
             var spawnTime = currentNote.TimeInSeconds - spawnDistance / speed;
@@ -107,8 +107,8 @@ public class MidiTest : MonoBehaviour
 
 public GameObject GetNoteOnTheBeatLeft(float range)
 {
-    float leftBound = _hitSpotLeft.transform.position.x - range;
-    float rightBound = _hitSpotLeft.transform.position.x + range;
+    float leftBound = _hitSpotLeft.position.x - range;
+    float rightBound = _hitSpotLeft.position.x + range;
 
     foreach (var note in _spawnedNotes)
     {
@@ -143,7 +143,9 @@ public GameObject GetNoteOnTheBeatRight(float range)
         if (noteToSpawn == null) return null;
         
         var heightAdjustment = GetHeightAdjustment(currentNote.Note);
-        var adjustedPosition = new Vector3(_spawnNotesXPos.transform.position.x, heightAdjustment, _spawnNotesXPos.transform.position.z);
+        var pawOffset = currentNote.Note == 36 || currentNote.Note == 37 ? 0f : Mathf.Abs(_hitSpotLeft.position.x - _hitSpotRight.position.x);
+        var adjustedPosition = new Vector3(_spawnNotesXPos.transform.position.x + pawOffset, heightAdjustment, _spawnNotesXPos.transform.position.z);
+        
         return Instantiate(noteToSpawn, adjustedPosition, Quaternion.identity);
     }
 

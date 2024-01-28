@@ -14,6 +14,10 @@ public class SmashTheNotes : MonoBehaviour
     private bool hasMoved = false;
     private bool hitDetected = false;
 
+    public Transform _origin;
+    public Transform _target;
+
+
     [SerializeField] private PawType pawType;
     [SerializeField] private float _offsetLeft = 2f;
     [SerializeField] private float _offsetRight = 1f;
@@ -36,7 +40,7 @@ public class SmashTheNotes : MonoBehaviour
         GameObject noteInBeatRangeLeft = MidiTest.Instance.GetNoteOnTheBeatLeft(_graceRange);
         GameObject noteInBeatRangeRight = MidiTest.Instance.GetNoteOnTheBeatRight(_graceRange);
 
-        if (pawType == PawType.Left && (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a")))
+        if (pawType == PawType.Left && (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("a")))
         {
             if (noteInBeatRangeLeft != null)
             {
@@ -57,7 +61,7 @@ public class SmashTheNotes : MonoBehaviour
 
             hasMoved = true;
         }
-        else if (pawType == PawType.Right && (Input.GetKey(KeyCode.RightArrow) || Input.GetKey("d")))
+        else if (pawType == PawType.Right && (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("d")))
         {
             if (noteInBeatRangeRight != null)
             {
@@ -105,16 +109,13 @@ public class SmashTheNotes : MonoBehaviour
 
     private void Move()
     {
-        var offset = pawType == PawType.Left ? _offsetLeft : _offsetRight;
-        var newPosition = new Vector3(this.transform.position.x, offset, -1.0f);
-        this.GetComponent<Rigidbody>().MovePosition(newPosition);
+        this.GetComponent<Rigidbody>().MovePosition(_target.position);
         actionTimer = 0.1f; // reset timer
     }
 
     private void MoveToNoteAndReturn(GameObject note)
     {
-        var newPosition = new Vector3(this.transform.position.x, note.transform.position.y, -1.0f);
-        this.GetComponent<Rigidbody>().MovePosition(newPosition);
+        this.GetComponent<Rigidbody>().MovePosition(_target.position);
         hitDetected = true; 
         ReturnToInitialPosition(); 
     }

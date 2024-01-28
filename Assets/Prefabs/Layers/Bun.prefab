@@ -153,6 +153,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8636722624991974642, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
+      propertyPath: m_Mass
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
       propertyPath: _landedClips.Array.size
       value: 1

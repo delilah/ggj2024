@@ -28,6 +28,10 @@ PrefabInstance:
       propertyPath: _fallingClips.Array.data[0]
       value: 
       objectReference: {fileID: 8300000, guid: 5cf8304b908858e439d5376b46835d92, type: 3}
+    - target: {fileID: 773434473774349631, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: bb6d6105a3b55fb4b915669553187468, type: 2}
     - target: {fileID: 1558891057112137088, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 

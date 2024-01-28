@@ -19,8 +19,6 @@ public class SmashTheNotes : MonoBehaviour
 
 
     [SerializeField] private PawType pawType;
-    [SerializeField] private float _offsetLeft = 2f;
-    [SerializeField] private float _offsetRight = 1f;
     [SerializeField] private float colliderRadius;
     [SerializeField] private LayerMask noteLayer;
     [SerializeField] private float _graceRange = 2f;
@@ -84,7 +82,7 @@ public class SmashTheNotes : MonoBehaviour
         {
             hitDetected = true;
             Debug.Log($"Hit {pawType}");
-            //GameMessages.RequestGoodLayer();
+            GameMessages.RequestGoodLayer();
             ReturnToInitialPosition();
         }
     }

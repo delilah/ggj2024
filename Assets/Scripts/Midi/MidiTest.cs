@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MidiTest : MonoBehaviour
 {
+    public static MidiTest Instance { get; private set; }
     public List<TimedNote> notes;
     private Queue<TimedNote> _notesQueue;
     private List<GameObject> _spawnedNotes = new List<GameObject>();
+    private Dictionary<GameObject, float> _speedMultipliers = new Dictionary<GameObject, float>();
 
     public GameObject NoteA;
     public GameObject NoteB;
@@ -20,9 +22,24 @@ public class MidiTest : MonoBehaviour
 
     [SerializeField] private GameObject _spawnNotesXPos;
     [SerializeField] private GameObject _clearPrefabsPoint;
+    [SerializeField] private Transform _hitSpotLeft;
+    [SerializeField] private Transform _hitSpotRight;
 
     private float _currentTime = 0f;
-    public float speedMultiplier = 1f;
+    private bool _isGameOver = false;
+
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        } 
+        else 
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
@@ -33,69 +50,148 @@ public class MidiTest : MonoBehaviour
     void Update()
     {
         _currentTime += Time.deltaTime;
+        SpawnNotes();
+        MoveAndClearNotes();
 
-        while (_notesQueue.Count > 0 && _notesQueue.Peek().TimeInSeconds <= _currentTime)
+        // Check for gameover / end condition
+        if (!_isGameOver && _notesQueue.Count == 0 && _spawnedNotes.Count == 0)
+            {
+                Debug.Log("End of game");
+                GameMessages.NotifyGameOver();
+                 _isGameOver = true;
+            }
+    }
+
+    void SpawnNotes()
+    {
+        const float speed = 8f;
+        var spawnDistance = _spawnNotesXPos.transform.position.x;
+        
+        while (_notesQueue.Count > 0)
         {
-            TimedNote currentNote = _notesQueue.Dequeue();
-            GameObject noteSpawned = SpawnNotePrefab(currentNote);
-            _spawnedNotes.Add(noteSpawned);
+            var currentNote = _notesQueue.Peek();
+
+            if (currentNote.Note == 36 || currentNote.Note == 37)
+            {
+                spawnDistance = Mathf.Abs(_hitSpotLeft.position.x - _spawnNotesXPos.transform.position.x);
+            }
+            else if (currentNote.Note == 38 || currentNote.Note == 39)
+            {
+                spawnDistance = Mathf.Abs(_hitSpotRight.position.x - _spawnNotesXPos.transform.position.x);
+            }
+            
+            var spawnTime = currentNote.TimeInSeconds - spawnDistance / speed;
+            
+            if (spawnTime > _currentTime) break;
+
+            var spawnedNote = SpawnNotePrefab(currentNote);
+            _notesQueue.Dequeue();
+
+            _speedMultipliers[spawnedNote] = speed;
+            _spawnedNotes.Add(spawnedNote);
         }
+    }
 
-
-        for (int i = 0; i < _spawnedNotes.Count; i++)
-        {
-            var spawnedNote = _spawnedNotes[i];
-            Vector3 movement = new Vector3(-speedMultiplier * Time.deltaTime, 0, 0);
-            spawnedNote.transform.Translate(movement);
-        }
-
+    void MoveAndClearNotes()
+    {
         for (int i = _spawnedNotes.Count - 1; i >= 0; i--)
         {
             var spawnedNote = _spawnedNotes[i];
-            if (spawnedNote.transform.position.x < _clearPrefabsPoint.transform.position.x)
+            var speed = _speedMultipliers[spawnedNote];
+            var movement = new Vector3(-speed * Time.deltaTime, 0, 0);
+
+            var potentialNewPos = spawnedNote.transform.position + movement;
+            
+            if (potentialNewPos.x < _clearPrefabsPoint.transform.position.x)
             {
+                _speedMultipliers.Remove(spawnedNote);
                 Destroy(spawnedNote);
                 _spawnedNotes.RemoveAt(i);
+            }
+            else
+            {
+                spawnedNote.transform.Translate(movement);
             }
         }
     }
 
+public GameObject GetNoteOnTheBeatLeft(float range)
+{
+    float leftBound = _hitSpotLeft.position.x - range;
+    float rightBound = _hitSpotLeft.position.x + range;
+
+    foreach (var note in _spawnedNotes)
+    {
+        if (note.transform.position.x >= leftBound && note.transform.position.x <= rightBound)
+        {
+            return note;
+        }
+    }
+
+    return null;
+}
+
+public GameObject GetNoteOnTheBeatRight(float range)
+{
+    float leftBound = _hitSpotRight.transform.position.x - range;
+    float rightBound = _hitSpotRight.transform.position.x + range;
+
+    foreach (var note in _spawnedNotes)
+    {
+        if (note.transform.position.x >= leftBound && note.transform.position.x <= rightBound)
+        {
+            return note;
+        }
+    }
+
+    return null;
+}
+
     GameObject SpawnNotePrefab(TimedNote currentNote)
     {
-        GameObject noteToSpawn = null;
-        float heightAdjustment = 0f;
+        var noteToSpawn = GetNoteToSpawn(currentNote.Note);
+        if (noteToSpawn == null) return null;
+        
+        var heightAdjustment = GetHeightAdjustment(currentNote.Note);
+        var pawOffset = currentNote.Note == 36 || currentNote.Note == 37 ? 0f : Mathf.Abs(_hitSpotLeft.position.x - _hitSpotRight.position.x);
+        var adjustedPosition = new Vector3(_spawnNotesXPos.transform.position.x + pawOffset, heightAdjustment, _spawnNotesXPos.transform.position.z);
+        
+        return Instantiate(noteToSpawn, adjustedPosition, Quaternion.identity);
+    }
 
-        switch (currentNote.Note)
+    GameObject GetNoteToSpawn(int note)
+    {
+        switch (note)
         {
             case 36:
-                noteToSpawn = NoteA;
-                heightAdjustment = _lineA.position.y;
-                break;
+                return NoteA;
             case 37:
-                noteToSpawn = NoteB;
-                heightAdjustment = _lineB.position.y;
-                break;
+                return NoteB;
             case 38:
-                noteToSpawn = NoteC;
-                heightAdjustment = _lineC.position.y;
-                break;
+                return NoteC;
             case 39:
-                noteToSpawn = NoteD;
-                heightAdjustment = _lineD.position.y;
-                break;
+                return NoteD;
             default:
-                Debug.LogError($"Unexpected note number: {currentNote.Note}");
+                Debug.LogError($"Unexpected note number: {note}");
                 return null;
         }
+    }
 
-        if (noteToSpawn != null)
+   float GetHeightAdjustment(int note)
+    {
+        switch (note)
         {
-            Vector3 adjustedPosition = new Vector3(_spawnNotesXPos.transform.position.x, heightAdjustment, _spawnNotesXPos.transform.position.z);
-            return Instantiate(noteToSpawn, adjustedPosition, Quaternion.identity);
-        }
-        else
-        {
-            return null;
+            case 36:
+                return _lineA.position.y;
+            case 37:
+                return _lineB.position.y;
+            case 38:
+                return _lineC.position.y;
+            case 39:
+                return _lineD.position.y;
+            default:
+                Debug.LogError($"Unexpected note number: {note}");
+                return 0;
         }
     }
 }

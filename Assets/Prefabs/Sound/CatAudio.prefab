@@ -50,3 +50,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 676386893f1701e439ce3d7babfdf709, type: 3}
   - {fileID: 8300000, guid: d4ddfc59ccc7c664f80a760709f7519e, type: 3}
   - {fileID: 8300000, guid: ee78e35e7559fb4429c33d966dbd9b45, type: 3}
+  _goodLayerClips:
+  - {fileID: 8300000, guid: f5e3f4b92fa4d7c458c2747c21e017d0, type: 3}
+  _badLayerClips:
+  - {fileID: 8300000, guid: 9262ef6862e10ca4d94d687fe2f33fb3, type: 3}
+  - {fileID: 8300000, guid: bfdcef0d6217f83418ccce111eceb401, type: 3}
+  - {fileID: 8300000, guid: 8da1b5447b05a034c8b0dd8ea37b1f00, type: 3}

@@ -11,17 +11,13 @@ public class CakeLayer : MonoBehaviour
     [SerializeField] AudioClip[] _landedClips;
     [SerializeField] AudioClip[] _destroyedClips;
 
-    private SoundPlayer _soundPlayer;
+    [SerializeField] bool _clipIsGood;
 
     private const float _minimumSceneY = -3;
 
     private void Start()
     {
-        var soundPlayerGameObject = GameObject.Find("SoundPlayer").gameObject;
-
-        _soundPlayer = soundPlayerGameObject.GetComponent<SoundPlayer>();
-
-        _soundPlayer.PlayRandomSample(_fallingClips);
+        SoundPlayer.Instance.PlayRandomSample(_fallingClips);
     }
 
     private void Update()
@@ -44,11 +40,20 @@ public class CakeLayer : MonoBehaviour
         }
         _hasLanded = true;
 
-        _soundPlayer.PlayRandomSample(_landedClips);
+        SoundPlayer.Instance.PlayRandomSample(_landedClips);
+
+        if (_clipIsGood)
+        {
+            CatAudioManager.Instance.PlayGoodLayer();
+        }
+        else
+        {
+            CatAudioManager.Instance.PlayBadLayer();
+        }
     }
 
     private void OnDestroy()
     {
-        _soundPlayer.PlayRandomSample(_destroyedClips);
+        SoundPlayer.Instance.PlayRandomSample(_destroyedClips);
     }
 }

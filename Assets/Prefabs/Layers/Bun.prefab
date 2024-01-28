@@ -158,6 +158,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
+      propertyPath: _clipIsGood
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 216873521404710765, guid: cde8e91eca55d5a409424a32b437af0f, type: 3}
       propertyPath: _landedClips.Array.size
       value: 1
       objectReference: {fileID: 0}

@@ -17,11 +17,15 @@ public class SmashTheNotes : MonoBehaviour
     public Transform _origin;
     public Transform _target;
 
-
     [SerializeField] private PawType pawType;
     [SerializeField] private float colliderRadius;
-    [SerializeField] private LayerMask noteLayer;
+    [SerializeField] private LayerMask missLeftLayer;
+    [SerializeField] private LayerMask missRightLayer;
     [SerializeField] private float _graceRange = 2f;
+
+    
+    private int _successCounter = 0;
+    public int NUMBER_OF_SUCCESS = 15; //const,public for tweaking
 
     void Update()
     {
@@ -79,14 +83,6 @@ public class SmashTheNotes : MonoBehaviour
         {
             ReturnToInitialPosition();
         }
-
-        if (!hitDetected && Physics.CheckSphere(transform.position, colliderRadius, noteLayer))
-        {
-            hitDetected = true;
-            Debug.Log($"Hit {pawType}");
-            GameMessages.RequestGoodLayer();
-            ReturnToInitialPosition();
-        }
     }
 
     private void Move()
@@ -96,14 +92,26 @@ public class SmashTheNotes : MonoBehaviour
     }
 
     private void MoveToNoteAndReturn(GameObject note)
-    {
-        this.GetComponent<Rigidbody>().MovePosition(_target.position);
+{
+    // Workaround: we already know the notes are in our range when we move the paw
+        hitDetected = true;
+        Debug.Log($"Hit {pawType}");
+
+         _successCounter++;
+
+        if (_successCounter % NUMBER_OF_SUCCESS == 0)
+        {
+           GameMessages.RequestGoodLayer();
+        }
+
         // Deactivate Object I collided with for visual cue
         note.SetActive(false);
 
-        hitDetected = true;
-        ReturnToInitialPosition();
-    }
+    // Move the paw to the target position
+    this.GetComponent<Rigidbody>().MovePosition(_target.position);
+
+    ReturnToInitialPosition();
+}
 
     private void ReturnToInitialPosition()
     {

@@ -16,7 +16,7 @@ public class CakeLayer : MonoBehaviour
 
     [SerializeField] bool _clipIsGood;
 
-    [SerializeField] private int _minimumSceneY = -5;
+    [SerializeField] private int _minimumSceneY = 0;
 
     [SerializeField] private GameObject[] _collisionFxs;
 

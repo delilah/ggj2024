@@ -25,9 +25,6 @@ public class SmashTheNotes : MonoBehaviour
     [SerializeField] private LayerMask noteLayer;
     [SerializeField] private float _graceRange = 2f;
 
-    // Actions
-    public static event Action GoodLayer;
-    public static event Action BadLayer;
 
     void Start()
     {
@@ -36,7 +33,6 @@ public class SmashTheNotes : MonoBehaviour
 
     void Update()
     {
-
         GameObject noteInBeatRangeLeft = MidiTest.Instance.GetNoteOnTheBeatLeft(_graceRange);
         GameObject noteInBeatRangeRight = MidiTest.Instance.GetNoteOnTheBeatRight(_graceRange);
 
@@ -45,9 +41,6 @@ public class SmashTheNotes : MonoBehaviour
             if (noteInBeatRangeLeft != null)
             {
                 var noteType = noteInBeatRangeLeft.name;
-
-                 Debug.Log("=======================================: " + noteType + noteInBeatRangeLeft.transform.position.y);
-
 
                 if (noteType.Contains("noteA") || noteType.Contains("noteB"))
                 {
@@ -67,12 +60,8 @@ public class SmashTheNotes : MonoBehaviour
             {
                 var noteType = noteInBeatRangeRight.name;
 
-                                Debug.Log("=======================================: " + noteType + noteInBeatRangeRight.transform.position.y);
-
                  if (noteType.Contains("noteC") || noteType.Contains("noteD"))
                 {
-                                        Debug.Log("+++++++++++++++rightpaw: " + noteInBeatRangeRight.transform.position.y);
-
                     MoveToNoteAndReturn(noteInBeatRangeRight);
                 }
             }
@@ -84,25 +73,18 @@ public class SmashTheNotes : MonoBehaviour
             hasMoved = true;
         }
 
-        if (actionTimer > 0)
+        actionTimer -= Time.deltaTime;
+
+        if (!hitDetected && hasMoved && actionTimer <= 0)
         {
-            actionTimer -= Time.deltaTime;
-        }
-        else
-        {
-            if (hasMoved && !Physics.CheckSphere(transform.position, colliderRadius, noteLayer))
-            {
-                Debug.Log($"Miss {pawType}");
-                BadLayer?.Invoke();
-                ReturnToInitialPosition();
-            }
+            ReturnToInitialPosition();
         }
 
         if (!hitDetected && Physics.CheckSphere(transform.position, colliderRadius, noteLayer))
         {
             hitDetected = true;
             Debug.Log($"Hit {pawType}");
-            GoodLayer?.Invoke();
+            //GameMessages.RequestGoodLayer();
             ReturnToInitialPosition();
         }
     }
@@ -116,6 +98,9 @@ public class SmashTheNotes : MonoBehaviour
     private void MoveToNoteAndReturn(GameObject note)
     {
         this.GetComponent<Rigidbody>().MovePosition(_target.position);
+        // Deactivate Object I collided with for visual cue
+        note.SetActive(false);
+
         hitDetected = true; 
         ReturnToInitialPosition(); 
     }

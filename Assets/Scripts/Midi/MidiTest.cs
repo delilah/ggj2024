@@ -26,6 +26,8 @@ public class MidiTest : MonoBehaviour
     [SerializeField] private Transform _hitSpotRight;
 
     private float _currentTime = 0f;
+    private bool _isGameOver = false;
+
 
     void Awake()
     {
@@ -50,6 +52,14 @@ public class MidiTest : MonoBehaviour
         _currentTime += Time.deltaTime;
         SpawnNotes();
         MoveAndClearNotes();
+
+        // Check for gameover / end condition
+        if (_notesQueue.Count == 0 && _spawnedNotes.Count == 0)
+            {
+                Debug.Log("End of game");
+                //GameMessages.NotifyGameOver();
+                 _isGameOver = true;
+            }
     }
 
     void SpawnNotes()

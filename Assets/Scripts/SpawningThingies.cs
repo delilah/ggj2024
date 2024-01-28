@@ -48,11 +48,13 @@ public class SpawningThingies : MonoBehaviour
         _spawningPoint.position = newPos;
     }
 
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.G)) SpawnRandomGoodLayer();
         if (Input.GetKeyDown(KeyCode.B)) SpawnRandomBadLayer();
     }
+#endif
 
     private void LateUpdate()
     {

@@ -9,8 +9,8 @@ public enum PawType
 
 public class SmashTheNotes : MonoBehaviour
 {
-    private Vector3 initialPosition;
     private float actionTimer = 0.1f;
+    [SerializeField] private float _resetTimerTime = 0f;
     private bool hasMoved = false;
     private bool hitDetected = false;
 
@@ -22,12 +22,6 @@ public class SmashTheNotes : MonoBehaviour
     [SerializeField] private float colliderRadius;
     [SerializeField] private LayerMask noteLayer;
     [SerializeField] private float _graceRange = 2f;
-
-
-    void Start()
-    {
-        initialPosition = this.transform.position;
-    }
 
     void Update()
     {
@@ -44,6 +38,10 @@ public class SmashTheNotes : MonoBehaviour
                 {
                     MoveToNoteAndReturn(noteInBeatRangeLeft);
                 }
+                else
+                {
+                    Move();
+                }
             }
             else
             {
@@ -58,9 +56,13 @@ public class SmashTheNotes : MonoBehaviour
             {
                 var noteType = noteInBeatRangeRight.name;
 
-                 if (noteType.Contains("noteC") || noteType.Contains("noteD"))
+                if (noteType.Contains("noteC") || noteType.Contains("noteD"))
                 {
                     MoveToNoteAndReturn(noteInBeatRangeRight);
+                }
+                else
+                {
+                    Move();
                 }
             }
             else
@@ -90,7 +92,7 @@ public class SmashTheNotes : MonoBehaviour
     private void Move()
     {
         this.GetComponent<Rigidbody>().MovePosition(_target.position);
-        actionTimer = 0.1f; // reset timer
+        actionTimer = _resetTimerTime; // reset timer
     }
 
     private void MoveToNoteAndReturn(GameObject note)
@@ -99,14 +101,14 @@ public class SmashTheNotes : MonoBehaviour
         // Deactivate Object I collided with for visual cue
         note.SetActive(false);
 
-        hitDetected = true; 
-        ReturnToInitialPosition(); 
+        hitDetected = true;
+        ReturnToInitialPosition();
     }
 
     private void ReturnToInitialPosition()
     {
-        this.transform.position = initialPosition;
-        actionTimer = 0.1f; // reset timer
+        this.transform.position = _origin.position;
+        actionTimer = _resetTimerTime; // reset timer
         hitDetected = false; // reset hit detection
         hasMoved = false;
     }

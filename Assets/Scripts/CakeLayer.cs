@@ -74,10 +74,11 @@ public class CakeLayer : MonoBehaviour
     private void RenderFx()
     {
         var position = gameObject.transform.position;
-        position.y -= _layerHeight / 2;
+        position.y -= _layerHeight;
+
         foreach (var collissionFx in _collisionFxs)
         {
-            var collissionFxInstance = Instantiate(collissionFx, position, Quaternion.identity);
+            var collissionFxInstance = Instantiate(collissionFx, position, gameObject.transform.rotation);
             Destroy(collissionFxInstance, 2.5f);
         }
     }

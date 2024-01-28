@@ -15,8 +15,8 @@ public class SmashTheNotes : MonoBehaviour
     private bool hitDetected = false;
 
     [SerializeField] private PawType pawType;
-    [SerializeField] private float _offsetLeft = 2f;
-    [SerializeField] private float _offsetRight = 1f;
+    private float _offsetLeft = 3f;
+    private float _offsetRight = 1.2f;
     [SerializeField] private float colliderRadius;
     [SerializeField] private LayerMask noteLayer;
     [SerializeField] private float _graceRange = 2f;
@@ -32,49 +32,24 @@ public class SmashTheNotes : MonoBehaviour
 
     void Update()
     {
+        GameObject noteInBeatRange = (pawType == PawType.Left) ? MidiTest.Instance.GetNoteOnTheBeatLeft(_graceRange) : MidiTest.Instance.GetNoteOnTheBeatRight(_graceRange);
+        bool isKeyPressed = (pawType == PawType.Left) ? (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a")) : (Input.GetKey(KeyCode.RightArrow) || Input.GetKey("d"));
+        string noteToCheck = (pawType == PawType.Left) ? "noteA" : "noteC";
+        string noteToCheck2 = (pawType == PawType.Left) ? "noteB" : "noteD";
 
-        GameObject noteInBeatRangeLeft = MidiTest.Instance.GetNoteOnTheBeatLeft(_graceRange);
-        GameObject noteInBeatRangeRight = MidiTest.Instance.GetNoteOnTheBeatRight(_graceRange);
-
-        if (pawType == PawType.Left && (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a")))
+        if (isKeyPressed)
         {
-            if (noteInBeatRangeLeft != null)
+            if (noteInBeatRange != null)
             {
-                var noteType = noteInBeatRangeLeft.name;
-
-                 Debug.Log("=======================================: " + noteType + noteInBeatRangeLeft.transform.position.y);
-
-
-                if (noteType.Contains("noteA") || noteType.Contains("noteB"))
+                var noteType = noteInBeatRange.name;
+                if (noteType.Contains(noteToCheck) || noteType.Contains(noteToCheck2))
                 {
-                    MoveToNoteAndReturn(noteInBeatRangeLeft);
+                    MoveAndReturn();
                 }
             }
             else
             {
-                Move();
-            }
-
-            hasMoved = true;
-        }
-        else if (pawType == PawType.Right && (Input.GetKey(KeyCode.RightArrow) || Input.GetKey("d")))
-        {
-            if (noteInBeatRangeRight != null)
-            {
-                var noteType = noteInBeatRangeRight.name;
-
-                                Debug.Log("=======================================: " + noteType + noteInBeatRangeRight.transform.position.y);
-
-                 if (noteType.Contains("noteC") || noteType.Contains("noteD"))
-                {
-                                        Debug.Log("+++++++++++++++rightpaw: " + noteInBeatRangeRight.transform.position.y);
-
-                    MoveToNoteAndReturn(noteInBeatRangeRight);
-                }
-            }
-            else
-            {
-                Move();
+                MoveAndReturn();
             }
 
             hasMoved = true;
@@ -103,17 +78,10 @@ public class SmashTheNotes : MonoBehaviour
         }
     }
 
-    private void Move()
+    private void MoveAndReturn()
     {
         var offset = pawType == PawType.Left ? _offsetLeft : _offsetRight;
         var newPosition = new Vector3(this.transform.position.x, offset, -1.0f);
-        this.GetComponent<Rigidbody>().MovePosition(newPosition);
-        actionTimer = 0.1f; // reset timer
-    }
-
-    private void MoveToNoteAndReturn(GameObject note)
-    {
-        var newPosition = new Vector3(this.transform.position.x, note.transform.position.y, -1.0f);
         this.GetComponent<Rigidbody>().MovePosition(newPosition);
         hitDetected = true; 
         ReturnToInitialPosition(); 

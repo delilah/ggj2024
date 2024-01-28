@@ -250,6 +250,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PawLeft
       objectReference: {fileID: 0}
+    - target: {fileID: 2178699621592414167, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
+      propertyPath: _offsetLeft
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178699621592414167, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
+      propertyPath: _offsetRight
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7765660445197104425, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5
@@ -564,6 +572,14 @@ PrefabInstance:
     - target: {fileID: 2178699621592414167, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
       propertyPath: pawType
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178699621592414167, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
+      propertyPath: _offsetLeft
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2178699621592414167, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
+      propertyPath: _offsetRight
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 7765660445197104425, guid: 3325c042c9a0adf4284f6352c69dee61, type: 3}
       propertyPath: m_LocalPosition.x

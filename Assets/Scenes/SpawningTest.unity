@@ -478,7 +478,6 @@ MonoBehaviour:
   - {fileID: 4953242198795087411, guid: 9ff9a91308c14c043975a6ce83469bde, type: 3}
   _yuckyLayerPrefabs:
   - {fileID: 4953242198795087411, guid: 1c4c1f64a3739ba48a92a867714b1898, type: 3}
-  - {fileID: 4953242198795087411, guid: 161f1e7d1c1d6f2478fcb6a6e88766ea, type: 3}
   _spawningPoint: {fileID: 2118877701}
   _highestCake: {fileID: 734023243}
 --- !u!4 &955779783

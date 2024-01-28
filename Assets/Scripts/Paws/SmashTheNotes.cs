@@ -4,23 +4,44 @@ public class SmashTheNotes : MonoBehaviour
 {
     private Vector3 initialPosition;
     private float actionTimer = 0.1f;
+    private bool hasMoved = false;
+    private bool hitDetected = false;
 
     [SerializeField] private float _offsetLeft; 
+    [SerializeField] private float _offsetRight; 
+
+    [SerializeField] private float colliderRadius;
+    [SerializeField] private LayerMask noteLayer;
 
     void Start () 
     {
         initialPosition = this.transform.position;
-        // init
-        _offsetLeft = -.33f;
+        _offsetLeft = 1.33f;
+        _offsetRight = 2.0f;
     }
 
     void Update()
     {
-        // move the object when left arrow or "A" is pressed
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a"))
+
+          if (gameObject.name == "PawLeft")
+        {
+            if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey("a"))
         {
             Move();
+            hasMoved = true;
         }
+        } 
+
+        if (gameObject.name == "PawRight")
+        {
+            if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey("d"))
+        {
+            Move();
+            hasMoved = true;
+        }
+        }
+
+        
 
         // decrease timer
         if (actionTimer > 0)
@@ -29,32 +50,57 @@ public class SmashTheNotes : MonoBehaviour
         }
         else
         {
+            if (hasMoved && !Physics.CheckSphere(transform.position, colliderRadius, noteLayer))
+            {
+                if (gameObject.name == "PawLeft")
+                {
+                    Debug.Log("Miss PawLeft");
+                }
+                else if (gameObject.name == "PawRight")
+                {
+                    Debug.Log("Miss PawRight");
+                }
+            }
             ReturnToInitialPosition();
+            hasMoved = false;
+        }
+
+        if (!hitDetected && Physics.CheckSphere(transform.position, colliderRadius, noteLayer))
+        {
+            hitDetected = true;
+            if (gameObject.name == "PawLeft")
+            {
+                Debug.Log("Hit PawLeft");
+            }
+            else if (gameObject.name == "PawRight")
+            {
+                Debug.Log("Hit PawRight");
+            }
+            ReturnToInitialPosition();
+            hasMoved = false;
         }
     }
     
     private void Move()
     {
-        this.transform.position = new Vector3(this.transform.position.x, _offsetLeft, -1.0f);
+        var newPosition = new Vector3(this.transform.position.x, this.transform.position.y, -1.0f);
+        
+        if (gameObject.name == "PawLeft")
+        {
+            newPosition = new Vector3(this.transform.position.x, _offsetLeft, -1.0f);
+        } 
+        else 
+        {
+            newPosition = new Vector3(this.transform.position.x, _offsetRight, -1.0f);
+        }
+        this.GetComponent<Rigidbody>().MovePosition(newPosition);
         actionTimer = 0.1f; // reset timer
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.name == "noteA" || collision.gameObject.name == "noteB" || 
-            collision.gameObject.name == "noteC" || collision.gameObject.name == "noteD")
-        {
-            Debug.Log("Hit");
-        }
-        else
-        {
-            Debug.Log("Miss");
-        }
     }
     
     private void ReturnToInitialPosition()
     {
         this.transform.position = initialPosition;
         actionTimer = 0.1f; // reset timer
+        hitDetected = false; // reset hit detection
     }
 }

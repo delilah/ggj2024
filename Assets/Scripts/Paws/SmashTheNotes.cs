@@ -15,8 +15,8 @@ public class SmashTheNotes : MonoBehaviour
     private bool hitDetected = false;
 
     [SerializeField] private PawType pawType;
-    [SerializeField] private float _offsetLeft = 1.33f;
-    [SerializeField] private float _offsetRight = 2.0f;
+    [SerializeField] private float _offsetLeft = 2f;
+    [SerializeField] private float _offsetRight = 1f;
     [SerializeField] private float colliderRadius;
     [SerializeField] private LayerMask noteLayer;
 

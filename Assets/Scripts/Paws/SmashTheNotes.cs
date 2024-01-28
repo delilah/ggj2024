@@ -42,7 +42,7 @@ public class SmashTheNotes : MonoBehaviour
                  Debug.Log("=======================================: " + noteType + noteInBeatRange.transform.position.y);
 
 
-                if (noteType.Contains("noteA") || noteType.Contains("noteC"))
+                if (noteType.Contains("noteA") || noteType.Contains("noteB"))
                 {
                     Debug.Log("++++++++++++++++leftpaw: " + noteInBeatRange.transform.position.y);
                     MoveToNoteAndReturn(noteInBeatRange);
@@ -66,7 +66,7 @@ public class SmashTheNotes : MonoBehaviour
 
                                 Debug.Log("=======================================: " + noteType + noteInBeatRange.transform.position.y);
 
-                 if (noteType.Contains("noteB") || noteType.Contains("noteD"))
+                 if (noteType.Contains("noteC") || noteType.Contains("noteD"))
                 {
                                         Debug.Log("+++++++++++++++rightpaw: " + noteInBeatRange.transform.position.y);
 

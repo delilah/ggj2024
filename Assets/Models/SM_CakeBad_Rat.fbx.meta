@@ -3,7 +3,32 @@ guid: 0c7e77ea0128fc84393a0c66a52aeb77
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_RatEyes
+    second: {fileID: 2100000, guid: 65474dee0ea0fee419deffefef86fe15, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_RatFur
+    second: {fileID: 2100000, guid: 585617b7463054643a64684314d187b3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_RatSkin
+    second: {fileID: 2100000, guid: af96554eb50b4a646befa5605111bcd3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_RatTeeth
+    second: {fileID: 2100000, guid: 98c4c66dc02d4f541b714fefca6eb4a1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_RatTongue
+    second: {fileID: 2100000, guid: 6a88251ec6aba5343a12abe3082dd5d6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

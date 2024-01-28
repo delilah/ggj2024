@@ -32,7 +32,7 @@ public class SmashTheNotes : MonoBehaviour
         GameObject noteInBeatRangeLeft = MidiTest.Instance.GetNoteOnTheBeatLeft(_graceRange);
         GameObject noteInBeatRangeRight = MidiTest.Instance.GetNoteOnTheBeatRight(_graceRange);
 
-        if (pawType == PawType.Left && (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown("a")))
+        if (pawType == PawType.Left && (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)))
         {
             if (noteInBeatRangeLeft != null)
             {
@@ -54,7 +54,7 @@ public class SmashTheNotes : MonoBehaviour
 
             hasMoved = true;
         }
-        else if (pawType == PawType.Right && (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown("d")))
+        else if (pawType == PawType.Right && (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.L)))
         {
             if (noteInBeatRangeRight != null)
             {

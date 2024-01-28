@@ -21,6 +21,6 @@ public class CakeReview : MonoBehaviour
         {
             _text.SetText(_badReviews[Random.Range(0, _badReviews.Count)]);
         }
-        _score.SetText($"{Mathf.RoundToInt(score * 10f)}/10");
+        _score.SetText($"- {Mathf.RoundToInt(score * 10f)}/10 -");
     }
 }

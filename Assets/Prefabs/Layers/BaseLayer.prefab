@@ -356,3 +356,6 @@ MonoBehaviour:
   _fallingClips: []
   _landedClips: []
   _destroyedClips: []
+  _clipIsGood: 0
+  _minimumSceneY: -5
+  _collisionFxs: []

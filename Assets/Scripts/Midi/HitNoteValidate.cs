@@ -8,7 +8,7 @@ public class HitNoteValidate : MonoBehaviour
     {
         if(other.gameObject.TryGetComponent<SpawnedNote>(out var spawnedNote))
         {
-            Debug.Log($"Hit: {spawnedNote.TimedNote.Note}:{spawnedNote.TimedNote.TimeInSeconds} at {Time.realtimeSinceStartup}");
+            //Debug.Log($"Hit: {spawnedNote.TimedNote.Note}:{spawnedNote.TimedNote.TimeInSeconds} at {Time.realtimeSinceStartup}");
         }
     }
 }

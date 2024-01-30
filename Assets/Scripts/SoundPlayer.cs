@@ -7,32 +7,26 @@ public class SoundPlayer : MonoBehaviour
 {
     public static SoundPlayer Instance { get; private set; }
 
-    private Dictionary<string, AudioSource> _audioSources;
+    [SerializeField] private AudioSource _sfxSource;
+    [SerializeField] private AudioSource _soundtrackSource;
 
-    private void Start()
+    private void Awake()
     {
-        _audioSources = GetComponentsInChildren<AudioSource>().ToDictionary(x => x.name, x => x);
-
         Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
+
+    private void Update()
+    {
+        if (_soundtrackSource.time >= _soundtrackSource.clip.length) GameMessages.NotifyGameOver();
     }
 
     public void PlayRandomSample(AudioClip[] audioClips)
     {
-        PlayRandomClip(audioClips, "Samples");
-    }
-
-    private void PlayRandomClip(AudioClip[] audioClips, string type)
-    {
-        if (!_audioSources.ContainsKey(type))
-        {
-            throw new InvalidOperationException($"AudioSource {type} does not exist.");
-        }
-
-        if (_audioSources[type] == null)
-        {
-            return;
-        }
-
-        _audioSources[type].PlayOneShot(audioClips[UnityEngine.Random.Range(0, audioClips.Length)]);
+        _sfxSource.PlayOneShot(audioClips[UnityEngine.Random.Range(0, audioClips.Length)]);
     }
 }

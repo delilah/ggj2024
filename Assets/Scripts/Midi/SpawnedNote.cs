@@ -5,14 +5,14 @@ using UnityEngine;
 
 public class SpawnedNote : MonoBehaviour
 {
-    [SerializeField] private GameObject _tooLate;
+    //[SerializeField] private GameObject _tooLate;
 
     public TimedNote TimedNote { get; set; }
 
-    private void OnEnable()
-    {
-        _tooLate.SetActive(false);
-    }
+    //private void OnEnable()
+    //{
+    //    _tooLate.SetActive(false);
+    //}
 
     public void SetInRange(bool isNoteInRangeOfHit)
     {
@@ -21,6 +21,6 @@ public class SpawnedNote : MonoBehaviour
 
     public void SetTooLate()
     {
-        _tooLate.SetActive(true);
+        //_tooLate.SetActive(true);
     }
 }

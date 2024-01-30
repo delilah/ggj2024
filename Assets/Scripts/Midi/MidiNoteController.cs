@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class MidiNoteController : MonoBehaviour
 {
-
     public enum NoteName
     {
         LeftPawA    = 36,
@@ -14,9 +13,12 @@ public class MidiNoteController : MonoBehaviour
         RightPawB   = 39
     }
 
+    // TODO: Move to monobehavior and it's own thing
     [System.Serializable]
     public class PawTrack
     {
+        public Transform Paw;
+
         public Transform Spawn;
         public Transform Hit;
         public float GraceArea = 1f;
@@ -27,14 +29,26 @@ public class MidiNoteController : MonoBehaviour
         public GameObject Yes;
         public float YesHideTime { get; set; }
 
+        private Vector3 _pawRestingPosition;
+
+        TMPro.TMP_Text _nopeText;
+
         public void Awake()
         {
             Nope.SetActive(false);
             Yes.SetActive(false);
+            _pawRestingPosition = Paw.position;
+            _nopeText = Nope.GetComponent<TMPro.TMP_Text>();
+        }
+
+        public void SetPawDown(bool isPawDown)
+        {
+            Paw.position = isPawDown ? Hit.position : _pawRestingPosition;
         }
 
         public void ShowNope()
         {
+            _nopeText.SetText("Nope!");
             Nope.SetActive(true);
             NopeHideTime = 0.2f;
         }
@@ -53,11 +67,21 @@ public class MidiNoteController : MonoBehaviour
             YesHideTime -= Time.deltaTime;
             if (YesHideTime <= 0f) Yes.SetActive(false);
         }
+
+        public void ShowMiss()
+        {
+            _nopeText.SetText("Miss!");
+            Nope.SetActive(true);
+            NopeHideTime = 0.2f;
+        }
     }
 
     public List<TimedNote> _notes;
 
     [SerializeField] private float _speed = 10f;
+    [SerializeField] private float _minLayerSpacing = 2f;
+    [SerializeField] private int _successCountForLayer = 5;
+    [SerializeField] private int _missedCountForLayer = 5;
     [SerializeField] private PlayerInput _playerInput;
 
     [SerializeField] private PawTrack _leftPawTrack;
@@ -70,6 +94,10 @@ public class MidiNoteController : MonoBehaviour
     private float _currentTime;
 
     private UnityEngine.Pool.ObjectPool<SpawnedNote> _spawnedNotesPool;
+
+    private int _successCounter = 0;
+    private int _missedCounter = 0;
+    private float _lastLayerSpawnTime;
 
     private void OnDrawGizmos()
     {
@@ -93,6 +121,7 @@ public class MidiNoteController : MonoBehaviour
         SpawnNotes();
         CheckInput();
         UpdateNopes();
+        EvaluateAddingLayer();
     }
 
     private void UpdateNopes()
@@ -110,6 +139,9 @@ public class MidiNoteController : MonoBehaviour
     {
         var isPawLeftDown = _playerInput.GetLeftPawDown();
         var isPawRightDown = _playerInput.GetRightPawDown();
+
+        _leftPawTrack.SetPawDown(isPawLeftDown);
+        _rightPawTrack.SetPawDown(isPawRightDown);
 
         if (!isPawLeftDown && !isPawRightDown) return;
 
@@ -155,6 +187,8 @@ public class MidiNoteController : MonoBehaviour
                 _spawnedNotesPool.Release(spawnedNote);
 
                 _leftPawTrack.ShowYes();
+
+                _successCounter++;
             }
 
             if (!isLeftPawNote && isPawRightDown) 
@@ -165,6 +199,8 @@ public class MidiNoteController : MonoBehaviour
                 _spawnedNotesPool.Release(spawnedNote);
 
                 _rightPawTrack.ShowYes();
+
+                _successCounter++;
             }
         }
 
@@ -173,12 +209,14 @@ public class MidiNoteController : MonoBehaviour
         {
             Debug.Log($"LEFT PAW MISS!");
             _leftPawTrack.ShowNope();
+            _missedCounter++;
         }
 
         if(!hasNoteOnRight && isPawRightDown)
         {
             Debug.Log($"RIGHT PAW MISS!");
             _rightPawTrack.ShowNope();
+            _missedCounter++;
         }
     }
 
@@ -252,14 +290,38 @@ public class MidiNoteController : MonoBehaviour
             {
                 Debug.Log($"Missed note: {spawnedNote.TimedNote.Note}");
 
-                spawnedNote.SetTooLate();
+                pawTrack.ShowMiss();
                 
                 _spawnedNotesInUse.RemoveAt(i);
                 _spawnedNotesTooLate.Add(spawnedNote);
-                
+
+                _missedCounter++;
             }
 
             spawnedNote.transform.Translate(movement);
+        }
+    }
+
+    private void EvaluateAddingLayer()
+    {
+        var canSpawn = (Time.time - _lastLayerSpawnTime) > _minLayerSpacing;
+
+        if(_successCounter >= _successCountForLayer && canSpawn)
+        {
+            _successCounter = 0;
+            GameMessages.RequestGoodLayer();
+
+            _lastLayerSpawnTime = Time.time;
+
+            canSpawn = false;
+        }
+
+        if (_missedCounter >= _missedCountForLayer && canSpawn)
+        {
+            _missedCounter = 0;
+            GameMessages.RequestBadLayer();
+
+            _lastLayerSpawnTime = Time.time;
         }
     }
 

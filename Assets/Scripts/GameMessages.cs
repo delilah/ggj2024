@@ -1,3 +1,5 @@
+using System;
+
 public class GameMessages 
 {
     public static event System.Action OnGameOver;
@@ -8,4 +10,10 @@ public class GameMessages
 
     public static event System.Action OnBadLayerRequested;
     public static void RequestBadLayer() => OnBadLayerRequested?.Invoke();
+
+    public static event System.Action OnGameStart;
+    public static void NotifyGameStart()
+    {
+        OnGameStart?.Invoke();
+    }
 }

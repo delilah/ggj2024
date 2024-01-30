@@ -9,9 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Intro.unity
     guid: 538423c87b42bbd4c8a044150d32768e
   - enabled: 1
-    path: Assets/Scenes/MainGame.unity
-    guid: 0ea85e9ac326a3740b43476cf5d327ea
+    path: Assets/Scenes/LoadScenes.unity
+    guid: 9dee9d46732b5a64ca3c93307e76f242
   - enabled: 1
     path: Assets/Scenes/Results.unity
     guid: 63edebaf3f89c94449f6ec91a18cdb5a
+  - enabled: 1
+    path: Assets/Scenes/InputRework.unity
+    guid: 6983d4ce303014a4faf2422a48e69107
+  - enabled: 1
+    path: Assets/Scenes/CakeStacking.unity
+    guid: a7dfc48624d2d774ea730a4a0b4eb2f5
   m_configObjects: {}

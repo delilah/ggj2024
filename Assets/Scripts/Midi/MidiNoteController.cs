@@ -20,6 +20,39 @@ public class MidiNoteController : MonoBehaviour
         public Transform Spawn;
         public Transform Hit;
         public float GraceArea = 1f;
+
+        public GameObject Nope;
+        public float NopeHideTime { get; set; }
+
+        public GameObject Yes;
+        public float YesHideTime { get; set; }
+
+        public void Awake()
+        {
+            Nope.SetActive(false);
+            Yes.SetActive(false);
+        }
+
+        public void ShowNope()
+        {
+            Nope.SetActive(true);
+            NopeHideTime = 0.2f;
+        }
+
+        public void ShowYes()
+        {
+            Yes.SetActive(true);
+            YesHideTime = 0.2f;
+        }
+
+        public void Update()
+        {
+            NopeHideTime -= Time.deltaTime;
+            if (NopeHideTime <= 0f) Nope.SetActive(false);
+
+            YesHideTime -= Time.deltaTime;
+            if (YesHideTime <= 0f) Yes.SetActive(false);
+        }
     }
 
     public List<TimedNote> _notes;
@@ -33,6 +66,7 @@ public class MidiNoteController : MonoBehaviour
 
     private Queue<TimedNote> _notesQueue;
     private List<SpawnedNote> _spawnedNotesInUse = new List<SpawnedNote>();
+    private List<SpawnedNote> _spawnedNotesTooLate = new List<SpawnedNote>();
     private float _currentTime;
 
     private UnityEngine.Pool.ObjectPool<SpawnedNote> _spawnedNotesPool;
@@ -49,14 +83,23 @@ public class MidiNoteController : MonoBehaviour
         _notes = MidiReader.GetNotesList("songtest");
         _notesQueue = new Queue<TimedNote>(_notes.Where(note => note.Note == 36 || note.Note == 38));
         _spawnedNotesPool = new UnityEngine.Pool.ObjectPool<SpawnedNote>(OnSpawnNote, OnGetNote, OnReleaseNote);
+
+        _leftPawTrack.Awake();
+        _rightPawTrack.Awake();
     }
 
     private void Update()
     {
         SpawnNotes();
         CheckInput();
+        UpdateNopes();
     }
 
+    private void UpdateNopes()
+    {
+        _leftPawTrack.Update();
+        _rightPawTrack.Update();
+    }
 
     private void FixedUpdate()
     {
@@ -110,6 +153,8 @@ public class MidiNoteController : MonoBehaviour
 
                 _spawnedNotesInUse.RemoveAt(i);
                 _spawnedNotesPool.Release(spawnedNote);
+
+                _leftPawTrack.ShowYes();
             }
 
             if (!isLeftPawNote && isPawRightDown) 
@@ -118,6 +163,8 @@ public class MidiNoteController : MonoBehaviour
 
                 _spawnedNotesInUse.RemoveAt(i);
                 _spawnedNotesPool.Release(spawnedNote);
+
+                _rightPawTrack.ShowYes();
             }
         }
 
@@ -125,11 +172,13 @@ public class MidiNoteController : MonoBehaviour
         if (!hasNoteOnLeft && isPawLeftDown)
         {
             Debug.Log($"LEFT PAW MISS!");
+            _leftPawTrack.ShowNope();
         }
 
         if(!hasNoteOnRight && isPawRightDown)
         {
             Debug.Log($"RIGHT PAW MISS!");
+            _rightPawTrack.ShowNope();
         }
     }
 
@@ -140,10 +189,11 @@ public class MidiNoteController : MonoBehaviour
 
     private void MoveNotes()
     {
-        for (int i = _spawnedNotesInUse.Count - 1; i >= 0; i--)
+        var movement = Vector3.down * _speed * Time.deltaTime;
+
+        for (int i = _spawnedNotesTooLate.Count - 1; i >= 0; i--)
         {
-            SpawnedNote spawnedNote = _spawnedNotesInUse[i];
-            var movement = Vector3.down * _speed * Time.deltaTime;
+            SpawnedNote spawnedNote = _spawnedNotesTooLate[i];
 
             var potentialNewPos = spawnedNote.transform.position + movement;
             PawTrack pawTrack = null;
@@ -160,18 +210,56 @@ public class MidiNoteController : MonoBehaviour
                     break;
             }
 
+            if (potentialNewPos.y < pawTrack.Hit.position.y - pawTrack.GraceArea * 2f)
+            {
+                Debug.Log($"Remove note: {spawnedNote.TimedNote.Note}");
+
+                _spawnedNotesTooLate.RemoveAt(i);
+                _spawnedNotesPool.Release(spawnedNote);
+            }
+
+            spawnedNote.transform.Translate(movement);
+        }
+
+
+        for (int i = _spawnedNotesInUse.Count - 1; i >= 0; i--)
+        {
+            SpawnedNote spawnedNote = _spawnedNotesInUse[i];
+
+            var potentialNewPos = spawnedNote.transform.position + movement;
+            PawTrack pawTrack = null;
+
+            switch ((NoteName)spawnedNote.TimedNote.Note)
+            {
+                case NoteName.LeftPawA:
+                case NoteName.LeftPawB:
+                    pawTrack = _leftPawTrack;
+                    break;
+                case NoteName.RightPawA:
+                case NoteName.RightPawB:
+                    pawTrack = _rightPawTrack;
+                    break;
+            }
+
+            bool isNoteInRangeOfHit = IsInRange(
+                spawnedNote.transform.position.y,
+                pawTrack.Hit.position.y - pawTrack.GraceArea,
+                pawTrack.Hit.position.y + pawTrack.GraceArea);
+
+            spawnedNote.SetInRange(isNoteInRangeOfHit);
 
             if (potentialNewPos.y < pawTrack.Hit.position.y - pawTrack.GraceArea)
             {
                 Debug.Log($"Missed note: {spawnedNote.TimedNote.Note}");
 
+                spawnedNote.SetTooLate();
+                
                 _spawnedNotesInUse.RemoveAt(i);
-                _spawnedNotesPool.Release(spawnedNote);
+                _spawnedNotesTooLate.Add(spawnedNote);
+                
             }
-            else
-            {
-                spawnedNote.transform.Translate(movement);
-            }
+
+            spawnedNote.transform.Translate(movement);
         }
     }
 
@@ -205,7 +293,7 @@ public class MidiNoteController : MonoBehaviour
 
             var queuedNote = _notesQueue.Dequeue();
 
-            Debug.Log($"Spawned: {queuedNote.Note} :: {queuedNote.TimeInSeconds}");
+            //Debug.Log($"Spawned: {queuedNote.Note} :: {queuedNote.TimeInSeconds}");
 
             var spawnedNote = _spawnedNotesPool.Get();
             spawnedNote.transform.position = pawTrack.Spawn.position;

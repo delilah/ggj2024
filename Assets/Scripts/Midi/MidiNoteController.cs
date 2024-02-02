@@ -181,7 +181,7 @@ public class MidiNoteController : MonoBehaviour
 
             if (isLeftPawNote && isPawLeftDown)
             {
-                Debug.Log($"LEFT PAW HIT: {spawnedNote.TimedNote.Note}");
+                //Debug.Log($"LEFT PAW HIT: {spawnedNote.TimedNote.Note}");
 
                 _spawnedNotesInUse.RemoveAt(i);
                 _spawnedNotesPool.Release(spawnedNote);
@@ -193,7 +193,7 @@ public class MidiNoteController : MonoBehaviour
 
             if (!isLeftPawNote && isPawRightDown) 
             {
-                Debug.Log($"RIGHT PAW HIT: {spawnedNote.TimedNote.Note}");
+                //Debug.Log($"RIGHT PAW HIT: {spawnedNote.TimedNote.Note}");
 
                 _spawnedNotesInUse.RemoveAt(i);
                 _spawnedNotesPool.Release(spawnedNote);
@@ -207,14 +207,14 @@ public class MidiNoteController : MonoBehaviour
 
         if (!hasNoteOnLeft && isPawLeftDown)
         {
-            Debug.Log($"LEFT PAW MISS!");
+            //Debug.Log($"LEFT PAW MISS!");
             _leftPawTrack.ShowNope();
             _missedCounter++;
         }
 
         if(!hasNoteOnRight && isPawRightDown)
         {
-            Debug.Log($"RIGHT PAW MISS!");
+            //Debug.Log($"RIGHT PAW MISS!");
             _rightPawTrack.ShowNope();
             _missedCounter++;
         }
@@ -250,7 +250,7 @@ public class MidiNoteController : MonoBehaviour
 
             if (potentialNewPos.y < pawTrack.Hit.position.y - pawTrack.GraceArea * 2f)
             {
-                Debug.Log($"Remove note: {spawnedNote.TimedNote.Note}");
+                //Debug.Log($"Remove note: {spawnedNote.TimedNote.Note}");
 
                 _spawnedNotesTooLate.RemoveAt(i);
                 _spawnedNotesPool.Release(spawnedNote);
@@ -288,7 +288,7 @@ public class MidiNoteController : MonoBehaviour
 
             if (potentialNewPos.y < pawTrack.Hit.position.y - pawTrack.GraceArea)
             {
-                Debug.Log($"Missed note: {spawnedNote.TimedNote.Note}");
+                //Debug.Log($"Missed note: {spawnedNote.TimedNote.Note}");
 
                 pawTrack.ShowMiss();
                 

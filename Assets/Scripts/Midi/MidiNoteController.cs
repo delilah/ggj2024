@@ -266,16 +266,19 @@ public class MidiNoteController : MonoBehaviour
 
             var potentialNewPos = spawnedNote.transform.position + movement;
             PawTrack pawTrack = null;
+            var hint = "";
 
             switch ((NoteName)spawnedNote.TimedNote.Note)
             {
                 case NoteName.LeftPawA:
                 case NoteName.LeftPawB:
                     pawTrack = _leftPawTrack;
+                    hint = _playerInput.LeftKey;
                     break;
                 case NoteName.RightPawA:
                 case NoteName.RightPawB:
                     pawTrack = _rightPawTrack;
+                    hint = _playerInput.RightKey;
                     break;
             }
 
@@ -284,7 +287,7 @@ public class MidiNoteController : MonoBehaviour
                 pawTrack.Hit.position.y - pawTrack.GraceArea,
                 pawTrack.Hit.position.y + pawTrack.GraceArea);
 
-            spawnedNote.SetInRange(isNoteInRangeOfHit);
+            spawnedNote.SetInRange(isNoteInRangeOfHit, hint);
 
             if (potentialNewPos.y < pawTrack.Hit.position.y - pawTrack.GraceArea)
             {

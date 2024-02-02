@@ -11,6 +11,9 @@ public class PlayerInput : MonoBehaviour
     private float _leftPawTapTime;
     private float _rightPawTapTime;
 
+    public string RightKey => _rightPaw.ToString();
+    public string LeftKey => _leftPaw.ToString();
+
     public bool GetLeftPawDown()
     {
         var tap = Time.time - _leftPawTapTime <= _tapGrace;
